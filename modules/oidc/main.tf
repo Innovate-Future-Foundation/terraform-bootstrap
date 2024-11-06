@@ -1,5 +1,9 @@
 locals {
+  # Full Repository name including Orgnisation name
   full_repo_name = "${var.orgnisation}/${var.repo_name}"
+
+  # Get rid of https://
+  provider_domain = split("/", var.provider_url)[2]
 }
 
 resource "aws_iam_openid_connect_provider" "oidc" {
@@ -24,13 +28,13 @@ data "aws_iam_policy_document" "assume_policy" {
     actions = ["sts:AssumeRoleWithWebIdentity"]
     condition {
       test     = "StringEquals"
-      variable = "${var.provider_url}:aud"
+      variable = "${local.provider_domain}:aud"
 
       values = [var.audience_url]
     }
     condition {
       test     = "StringLike"
-      variable = "${var.provider_url}:aud"
+      variable = "${local.provider_domain}:sub"
 
       values = ["repo:${local.full_repo_name}:*"]
     }
@@ -39,7 +43,7 @@ data "aws_iam_policy_document" "assume_policy" {
 
 # Config trust entity authenticate conditions
 resource "aws_iam_role" "remote_sts_role" {
-  name               = var.repo_name
+  name               = "oidc-${var.org_abbr}-${var.repo_name}"
   assume_role_policy = data.aws_iam_policy_document.assume_policy.json
 }
 

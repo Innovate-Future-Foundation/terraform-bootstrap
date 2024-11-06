@@ -8,6 +8,10 @@ variable "audience_url" {
   default = "sts.amazonaws.com"
 }
 
+variable "org_abbr" {
+  type = string
+}
+
 variable "orgnisation" {
   type = string
 }
