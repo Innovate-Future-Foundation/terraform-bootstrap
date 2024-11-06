@@ -8,6 +8,11 @@ variable "orgnisation" {
   default = "Innovate-Future-Foundation"
 }
 
+variable "org_abbr" {
+  type = string
+  default = "inff"
+}
+
 variable "repos" {
   type    = list(string)
   default = ["access-control"]

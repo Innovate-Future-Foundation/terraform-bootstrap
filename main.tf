@@ -15,14 +15,14 @@ provider "aws" {
 module "terraform_state" {
   for_each    = toset(var.repos)
   source      = "./modules/bucket"
-  bucket_name = "${each.key}-terraform-state"
+  bucket_name = "${var.org_abbr}-${each.key}-terraform-state"
 }
 
 # Terraform LockID
 module "terraform_locks" {
   for_each   = toset(var.repos)
   source     = "./modules/db"
-  table_name = "${each.key}-terraform-lockid"
+  table_name = "${var.org_abbr}-${each.key}-terraform-lock"
 }
 
 # Fetch GitHub OIDC Thumbprint
@@ -34,6 +34,7 @@ data "tls_certificate" "github" {
 module "terraform_roles" {
   for_each    = toset(var.repos)
   source      = "./modules/oidc"
+  org_abbr    = var.org_abbr
   orgnisation = var.orgnisation
   repo_name   = each.key
 
