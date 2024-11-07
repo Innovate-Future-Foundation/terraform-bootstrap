@@ -5,6 +5,9 @@ terraform {
       version = "~> 5.1"
     }
   }
+  
+  # Backend Skeleton
+  backend "s3" {}
 }
 
 provider "aws" {
