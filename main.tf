@@ -5,39 +5,43 @@ terraform {
       version = "~> 5.1"
     }
   }
+
+  # Backend Skeleton
+  backend "s3" {}
 }
 
 provider "aws" {
   region = var.location
 }
 
-# Terraform state
+# Terraform states
 module "terraform_state" {
   for_each    = toset(var.repos)
   source      = "./modules/bucket"
-  bucket_name = "${var.org_abbr}-${each.key}-terraform-state"
+  bucket_name = "${var.org_abbr}-${each.key}-tfstate"
 }
 
-# Terraform LockID
+# Terraform LockIDs
 module "terraform_locks" {
   for_each   = toset(var.repos)
   source     = "./modules/db"
-  table_name = "${var.org_abbr}-${each.key}-terraform-lock"
+  table_name = "${var.org_abbr}-${each.key}-tflock"
 }
 
-# Fetch GitHub OIDC Thumbprint
-data "tls_certificate" "github" {
-  url = "https://token.actions.githubusercontent.com/.well-known/openid-configuration"
+# OIDC Provider
+module "oidc_provider" {
+  source              = "./modules/oidc"
+  provider_thumbprint = var.oidc_provider_thumbprint
+  audience_url        = var.oidc_audience_url
 }
 
-# OIDC Assume Roles
+# Assume Roles with OIDC
 module "terraform_roles" {
-  for_each    = toset(var.repos)
-  source      = "./modules/oidc"
-  org_abbr    = var.org_abbr
-  orgnisation = var.orgnisation
-  repo_name   = each.key
-
-  # Accept manual input for thumbprint or else try to use fetched cert
-  provider_thumbprint = coalesce(var.oidc_provider_thumbprint, data.tls_certificate.github.certificates[0].sha1_fingerprint)
+  for_each     = toset(var.repos)
+  source       = "./modules/role"
+  oidc         = module.oidc_provider.github
+  audience_url = var.oidc_audience_url
+  org_abbr     = var.org_abbr
+  orgnisation  = var.orgnisation
+  repo_name    = each.key
 }
