@@ -41,7 +41,7 @@ jobs:
 
       - id: tf_plan
         name: Terraform Plan
-        run: terrafrom plan -out .planfile
+        run: terraform plan -out .planfile
 
       - id: post_comment
         name: Post Terraform Plan to PR
