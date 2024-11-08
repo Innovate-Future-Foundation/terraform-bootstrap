@@ -1,0 +1,53 @@
+name: Terraform Plan
+on:
+  pull_request:
+
+permissions:
+  # This is required for requesting the JWT (OIDC)
+  id-token: write 
+  # This is required for checkout code
+  contents: read
+
+jobs:
+  terraform_plan:
+    runs-on: ubuntu-22.04
+    # Specify trigger condition
+    if: github.event.pull_request.state != 'approved'
+    env:
+      # These are for testing
+      terraform_version: "1.1.7"
+      aws_region: "us-west-2"
+      aws_tfstate_bucket: "inff-5u91r-terraform-bootstrap-tfstate"
+      aws_tfstate_key: "state/terraform-state"
+      aws_tflock_table: "inff-5u91r-terraform-bootstrap-tflock"
+    
+    steps:
+      - id: checkout_latest
+        name: Checkout latest
+        uses: actions/checkout@v4
+
+      - id: tf_prep
+        name: Terraform setup using Access Key
+        uses: ./.github/actions/setup_with_key
+        with:
+          terraform_dir: "./"
+          terraform_version: ${{ env.terraform_version }}
+          aws_region: ${{ env.aws_region }}
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          aws_tfstate_bucket: ${{ env.aws_tfstate_bucket }}
+          aws_tfstate_key: ${{ env.aws_tfstate_key }}
+          aws_tflock_table: ${{ env.aws_tflock_table }}
+
+      - id: tf_plan
+        name: Terraform Plan
+        run: terrafrom plan -out .planfile
+
+      - id: post_comment
+        name: Post Terraform Plan to PR
+        uses: borchero/terraform-plan-comment@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          planfile: .planfile
+      
+      # Upload planfile to s3 for future apply
