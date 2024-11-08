@@ -14,8 +14,10 @@ jobs:
     # Specify trigger condition
     if: github.event.pull_request.state != 'approved'
     env:
-      # These are for testing
       terraform_version: "1.1.7"
+      # Non-Empty thumbprint will stop terraform from fetching it on the fly
+      github_oidc_provider_thumbprint: ""
+      # These are for testing purpose
       aws_region: "us-west-2"
       aws_tfstate_bucket: "inff-5u91r-terraform-bootstrap-tfstate"
       aws_tfstate_key: "state/terraform-state"
@@ -42,6 +44,8 @@ jobs:
       - id: tf_plan
         name: Terraform Plan
         run: terraform plan -out .planfile
+        env:
+          TF_VAR_oidc_provider_thumbprint: ${{ env.github_oidc_provider_thumbprint }}
 
       - id: post_comment
         name: Post Terraform Plan to PR
