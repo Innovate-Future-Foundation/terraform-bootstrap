@@ -29,7 +29,7 @@ jobs:
 
       - id: tf_prep
         name: Terraform setup using Access Key
-        uses: ./.github/actions/setup_with_key
+        uses: ./actions/setup_with_key
         with:
           terraform_dir: "./"
           terraform_version: ${{ env.terraform_version }}
