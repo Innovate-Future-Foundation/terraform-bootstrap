@@ -1,4 +1,4 @@
-name: Setup terraform with aws key
+name: Setup terraform with oidc
 inputs:
   terraform_version:
     description: 'Terraform Version'
@@ -9,11 +9,8 @@ inputs:
   aws_region:
     description: 'AWS Resource Region'
     required: true
-  aws_access_key:
-    description: 'AWS Access Key ID'
-    required: true
-  aws_secret_key:
-    description: 'AWS Secret Access Key'
+  aws_role_arn:
+    description: 'AWS Role to assume'
     required: true
   aws_tfstate_bucket:
     description: 'AWS Backend Bucket'
@@ -39,8 +36,7 @@ runs:
       uses: aws-actions/configure-aws-credentials@v2
       with:
         aws-region: ${{ inputs.aws_region }}
-        aws-access-key-id: ${{ inputs.aws_access_key }}
-        aws-secret-access-key: ${{ inputs.aws_secret_key }}
+        role-to-assume: ${{ inputs.aws_role_arn }}
     
     - id: tf_init
       name: Init Terraform
