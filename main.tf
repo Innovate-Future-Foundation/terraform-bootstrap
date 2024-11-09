@@ -50,7 +50,8 @@ module "terraform_state" {
 
 # Terraform LockIDs
 module "terraform_locks" {
-  for_each   = toset(var.repos)
-  source     = "./modules/db"
-  table_name = "${var.org_abbr}-${each.key}-tflock"
+  for_each       = toset(var.repos)
+  source         = "./modules/db"
+  table_name     = "${var.org_abbr}-${each.key}-tflock"
+  principal_role = module.github_roles[each.key].role
 }
