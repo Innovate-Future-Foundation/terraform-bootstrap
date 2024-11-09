@@ -14,6 +14,13 @@ provider "aws" {
   region = var.location
 }
 
+# Workflow Artifact
+module "workflow_artifact" {
+  for_each = toset(var.repos)
+  source = "./modules/bucket"
+  bucket_name = "${var.org_abbr}-${each.key}-workflow-artifact"
+}
+
 # Terraform states
 module "terraform_state" {
   for_each    = toset(var.repos)
