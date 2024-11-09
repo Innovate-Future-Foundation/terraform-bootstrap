@@ -32,3 +32,24 @@ resource "aws_s3_bucket_public_access_block" "bkt" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
+
+data "aws_iam_policy_document" "bkt_policy" {
+  statement {
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = [var.principal_role.arn]
+    }
+    actions = [
+      "s3:ListBucket",
+      "s3:GetObject",
+      "s3:PutObject"
+    ]
+    resources = [aws_s3_bucket.bkt.arn, "${aws_s3_bucket.bkt.arn}/*"]
+  }
+}
+
+resource "aws_s3_bucket_policy" "bkt" {
+  bucket = aws_s3_bucket.bkt.id
+  policy = data.aws_iam_policy_document.bkt_policy.json
+}
