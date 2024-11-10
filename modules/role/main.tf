@@ -43,7 +43,7 @@ resource "aws_iam_role" "repo_role" {
 }
 
 # Assign permission policy to role
-resource "aws_iam_role_policy_attachments_exclusive" "example" {
+resource "aws_iam_role_policy_attachments_exclusive" "attach_policy" {
   role_name   = aws_iam_role.repo_role.name
   policy_arns = [for policy in data.aws_iam_policy.fetched_policies : policy.arn]
 }
