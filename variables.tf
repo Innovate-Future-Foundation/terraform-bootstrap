@@ -9,13 +9,20 @@ variable "orgnisation" {
 }
 
 variable "org_abbr" {
-  type = string
+  type    = string
   default = "inff"
 }
 
 variable "repos" {
   type    = list(string)
   default = ["access-control"]
+}
+
+variable "repo_permission" {
+  type = map(list(string))
+  default = {
+    "access-control" = ["IAMFullAccess"]
+  }
 }
 
 variable "oidc_provider_url" {

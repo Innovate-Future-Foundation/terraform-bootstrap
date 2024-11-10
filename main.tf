@@ -22,14 +22,15 @@ module "oidc_provider" {
 }
 
 # Assume Roles with OIDC
-module "github_roles" {
-  for_each     = toset(var.repos)
-  source       = "./modules/role"
-  oidc         = module.oidc_provider.github
-  audience_url = var.oidc_audience_url
-  org_abbr     = var.org_abbr
-  orgnisation  = var.orgnisation
-  repo_name    = each.key
+module "repo_roles" {
+  for_each      = toset(var.repos)
+  source        = "./modules/role"
+  oidc          = module.oidc_provider.github
+  role_policies = var.repo_permission[each.key]
+  audience_url  = var.oidc_audience_url
+  org_abbr      = var.org_abbr
+  orgnisation   = var.orgnisation
+  repo_name     = each.key
 }
 
 # Workflow Artifact
@@ -37,7 +38,7 @@ module "workflow_artifact" {
   for_each       = toset(var.repos)
   source         = "./modules/bucket"
   bucket_name    = "${var.org_abbr}-${each.key}-workflow-artifact"
-  principal_role = module.github_roles[each.key].role
+  principal_role = module.repo_roles[each.key].role_obj
 }
 
 # Terraform states
@@ -45,7 +46,7 @@ module "terraform_state" {
   for_each       = toset(var.repos)
   source         = "./modules/bucket"
   bucket_name    = "${var.org_abbr}-${each.key}-tfstate"
-  principal_role = module.github_roles[each.key].role
+  principal_role = module.repo_roles[each.key].role_obj
 }
 
 # Terraform LockIDs
@@ -53,5 +54,5 @@ module "terraform_locks" {
   for_each       = toset(var.repos)
   source         = "./modules/db"
   table_name     = "${var.org_abbr}-${each.key}-tflock"
-  principal_role = module.github_roles[each.key].role
+  principal_role = module.repo_roles[each.key].role_obj
 }
