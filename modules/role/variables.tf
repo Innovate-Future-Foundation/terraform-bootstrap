@@ -5,6 +5,10 @@ variable "oidc" {
   })
 }
 
+variable "role_policies" {
+  type = list(string)
+}
+
 variable "audience_url" {
   type    = string
   default = "sts.amazonaws.com"
