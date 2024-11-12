@@ -1,0 +1,20 @@
+name: Merge Target Branch into PR
+inputs:
+  target:
+    description: 'Target branch'
+    required: true
+  
+runs:
+  using: 'composite'
+  steps:
+    - id: checkout_latest
+        name: Checkout latest
+        uses: actions/checkout@v4
+      
+    - id: fetch
+      name: Fetch latest
+      run: git fetch origin ${{ inputs.target }}
+
+    - id: merge
+      name: Merge latest target branch into PR branch
+      run: git merge origin/${{ inputs.target }}
