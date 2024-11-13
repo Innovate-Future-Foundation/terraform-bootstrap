@@ -13,6 +13,9 @@ jobs:
     # Specify trigger condition
     if: github.event.pull_request.state != 'approved'
     steps:
+      - id: checkout_latest
+        name: Checkout latest
+        uses: actions/checkout@v4
       - id: merge_into_pr
         name: Merge main into PR branch
         uses: ./actions/merge
@@ -52,5 +55,5 @@ jobs:
       
       - name: Upload Plan to S3
         run: |
-          aws s3 cp tfplan s3://${{ secrets.S3_REPO_ARTIFACT_BUCKET }}/plans/plan-pr_${{ github.event.pull_request.number }} --sse aws:kms
+          aws s3 cp .planfile s3://${{ secrets.S3_REPO_ARTIFACT_BUCKET }}/plans/plan-pr_${{ github.event.pull_request.number }}
           echo "Plan uploaded to S3"

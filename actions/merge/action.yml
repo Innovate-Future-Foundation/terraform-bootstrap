@@ -7,10 +7,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - id: checkout_latest
-        name: Checkout latest
-        uses: actions/checkout@v4
-      
     - id: fetch
       name: Fetch latest
       run: git fetch origin ${{ inputs.target }}
