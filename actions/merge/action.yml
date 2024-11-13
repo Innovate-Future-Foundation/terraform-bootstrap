@@ -15,4 +15,4 @@ runs:
     - id: merge
       name: Merge latest target branch into PR branch
       shell: bash
-      run: git merge origin/${{ inputs.target }}
+      run: git merge ${{ inputs.target }}
