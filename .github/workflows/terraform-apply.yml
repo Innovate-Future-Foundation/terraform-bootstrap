@@ -2,6 +2,13 @@ name: Terraform Apply
 on:
   push:
     branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: The Pull Request number
+        required: true
+        type: number
+
 
 permissions:
   id-token: write # This is required for requesting the JWT (OIDC)
@@ -20,10 +27,6 @@ jobs:
       aws_tflock_table: "inff-5u91r-terraform-bootstrap-tflock"
     
     steps:
-      - id: checkout_latest
-        name: Checkout latest
-        uses: actions/checkout@v4
-
       - id: tf_prep
         name: Terraform setup using Access Key
         uses: ./actions/setup_with_key
@@ -37,8 +40,34 @@ jobs:
           aws_tfstate_key: ${{ env.aws_tfstate_key }}
           aws_tflock_table: ${{ env.aws_tflock_table }}
 
-      # Load planfile from s3
-      # - id: fetch_plan
-      #   name: Fetch plan file from S3
-      # Apply planfile
-      # - id: tf_apply
+      - id: get_pr_number
+        name: Get PR number
+        if: github.event_name == 'push'
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "Getting PR number based on head_commit"
+            PR_NUMBER=$(gh pr list --base main --state merged --search "${{ github.event.head_commit.message }}" --json number --jq '.[0].number')
+          else
+            echo "Getting PR number from dispatch input"
+            PR_NUMBER=${{ github.event.inputs.pr_number }}
+          fi
+          if [ -z "$PR_NUMBER" ]; then
+            echo "No matching PR found"
+            exit 1
+          fi
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - id: dl_tf_plan
+        name: Download Plan from S3
+        run: |
+          aws s3 cp s3://${{ secrets.S3_REPO_ARTIFACT_BUCKET }}/plans/plan-PR${{ steps.get_pr_number.outputs.PR_NUMBER }} tfplan
+          if [ $? -ne 0 ]; then
+            echo "Failed to retrieve planfile. It may have expired or been deleted."
+            exit 1
+          fi
+
+      - id: tf_apply
+        name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
