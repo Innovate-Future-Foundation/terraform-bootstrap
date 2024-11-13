@@ -57,5 +57,5 @@ jobs:
       
       - name: Upload Plan to S3
         run: |
-          aws s3 cp tfplan s3://${{ secrets.S3_REPO_ARTIFACT_BUCKET }}/plans/plan-${{ github.event.pull_request.number }} --sse aws:kms
+          aws s3 cp tfplan s3://${{ secrets.S3_REPO_ARTIFACT_BUCKET }}/plans/plan-pr_${{ github.event.pull_request.number }} --sse aws:kms
           echo "Plan uploaded to S3"
