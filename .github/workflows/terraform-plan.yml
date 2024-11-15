@@ -16,11 +16,6 @@ jobs:
       - id: checkout_latest
         name: Checkout latest
         uses: actions/checkout@v4
-      - id: merge_into_pr
-        name: Merge main into PR branch
-        uses: ./actions/merge
-        with:
-          target: "main"
 
       - id: tf_prep
         name: Terraform setup using Access Key
