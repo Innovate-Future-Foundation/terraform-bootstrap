@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.1"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "3.6.3"
+    }
   }
 
   # Backend Skeleton
@@ -33,11 +37,17 @@ module "repo_roles" {
   repo_name     = each.key
 }
 
+# Bucket prefix
+resource "random_password" "prefix" {
+  length  = 5
+  special = false
+}
+
 # Workflow Artifact
 module "workflow_artifact" {
   for_each       = toset(var.repos)
   source         = "./modules/bucket"
-  bucket_name    = "${var.org_abbr}-${each.key}-workflow-artifact"
+  bucket_name    = "${var.org_abbr}-${random_password.prefix.result}-${each.key}-workflow-artifact"
   principal_role = module.repo_roles[each.key].role_obj
 }
 
@@ -45,7 +55,7 @@ module "workflow_artifact" {
 module "terraform_state" {
   for_each       = toset(var.repos)
   source         = "./modules/bucket"
-  bucket_name    = "${var.org_abbr}-${each.key}-tfstate"
+  bucket_name    = "${var.org_abbr}-${random_password.prefix.result}-${each.key}-tfstate"
   principal_role = module.repo_roles[each.key].role_obj
 }
 
