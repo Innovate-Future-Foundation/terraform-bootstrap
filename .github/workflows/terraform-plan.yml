@@ -12,16 +12,6 @@ jobs:
     runs-on: ubuntu-22.04
     # Specify trigger condition
     if: github.event.pull_request.state != 'approved'
-    env:
-      terraform_version: "1.1.7"
-      # Non-Empty thumbprint will stop terraform from fetching it on the fly
-      github_oidc_provider_thumbprint: ""
-      # These are for testing purpose
-      aws_region: "us-west-2"
-      aws_tfstate_bucket: "inff-5u91r-terraform-bootstrap-tfstate"
-      aws_tfstate_key: "state/terraform-state"
-      aws_tflock_table: "inff-5u91r-terraform-bootstrap-tflock"
-    
     steps:
       - id: checkout_latest
         name: Checkout latest
@@ -29,22 +19,27 @@ jobs:
 
       - id: tf_prep
         name: Terraform setup using Access Key
-        uses: ./.github/actions/setup_with_key
-        with:
+        uses: ./actions/setup_with_key
+        env:
+          terraform_version: "1.1.7"
           terraform_dir: "./"
+          aws_tfstate_key: "state/terraform-state"
+        with:
+          terraform_dir: ${{ env.terraform_dir }}
           terraform_version: ${{ env.terraform_version }}
-          aws_region: ${{ env.aws_region }}
+          aws_region: ${{ secrets.AWS_REGION }}
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-          aws_tfstate_bucket: ${{ env.aws_tfstate_bucket }}
+          aws_tfstate_bucket: ${{ secrets.S3_STATE_FILE_BUCKET }}
           aws_tfstate_key: ${{ env.aws_tfstate_key }}
-          aws_tflock_table: ${{ env.aws_tflock_table }}
+          aws_tflock_table: ${{ secrets.DYNAMODB_STATE_LOCK_TABLE }}
 
       - id: tf_plan
         name: Terraform Plan
         run: terraform plan -out .planfile
         env:
-          TF_VAR_oidc_provider_thumbprint: ${{ env.github_oidc_provider_thumbprint }}
+          # Non-blank value will overwrite the terraform fetched thumbprint
+          TF_VAR_oidc_provider_thumbprint: ""
 
       - id: post_comment
         name: Post Terraform Plan to PR
@@ -53,4 +48,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           planfile: .planfile
       
-      # Upload planfile to s3 for future apply
+      - name: Upload Plan to S3
+        run: |
+          aws s3 cp .planfile s3://${{ secrets.S3_REPO_ARTIFACT_BUCKET }}/plans/plan-pr_${{ github.event.pull_request.number }}
+          echo "Plan uploaded to S3"

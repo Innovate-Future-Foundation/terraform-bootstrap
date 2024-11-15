@@ -1,4 +1,4 @@
-name: Terraform Setup and Plan
+name: Setup terraform with aws key
 inputs:
   terraform_version:
     description: 'Terraform Version'

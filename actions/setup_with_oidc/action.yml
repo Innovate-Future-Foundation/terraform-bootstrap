@@ -1,0 +1,51 @@
+name: Setup terraform with oidc
+inputs:
+  terraform_version:
+    description: 'Terraform Version'
+    required: true
+  terraform_dir:
+    description: 'Working directory of terraform'
+    required: true
+  aws_region:
+    description: 'AWS Resource Region'
+    required: true
+  aws_role_arn:
+    description: 'AWS Role to assume'
+    required: true
+  aws_tfstate_bucket:
+    description: 'AWS Backend Bucket'
+    required: true
+  aws_tfstate_key:
+    description: 'AWS Terraform State File Key'
+    required: true
+  aws_tflock_table:
+    description: 'AWS Terraform Locking table'
+    required: true
+  
+runs:
+  using: 'composite'
+  steps:
+    - id: tf_setup
+      name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ${{ inputs.terraforom_version }}
+    
+    - id: aws_auth
+      name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-region: ${{ inputs.aws_region }}
+        role-to-assume: ${{ inputs.aws_role_arn }}
+    
+    - id: tf_init
+      name: Init Terraform
+      working-directory: ${{ inputs.terraform_dir }}
+      shell: bash
+      run: |
+        terraform init \
+          -backend-config="bucket=${{ inputs.aws_tfstate_bucket }}" \
+          -backend-config="key=${{ inputs.aws_tfstate_key }}" \
+          -backend-config="region=${{ inputs.aws_region }}" \
+          -backend-config="encrypt=true" \
+          -backend-config="dynamodb_table=${{ inputs.aws_tflock_table }}"
