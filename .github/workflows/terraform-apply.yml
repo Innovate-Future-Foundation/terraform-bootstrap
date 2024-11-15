@@ -19,6 +19,9 @@ jobs:
   terraform_plan:
     runs-on: ubuntu-22.04
     steps:
+      - id: checkout_latest
+        name: Checkout latest
+        uses: actions/checkout@v4
       - id: tf_prep
         name: Terraform setup using Access Key
         uses: ./actions/setup_with_key
