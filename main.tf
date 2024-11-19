@@ -41,6 +41,8 @@ module "repo_roles" {
 resource "random_password" "prefix" {
   length  = 5
   special = false
+  lower   = true
+  upper   = false
 }
 
 # Workflow Artifact
