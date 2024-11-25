@@ -8,8 +8,12 @@ locals {
 
 # Example policy
 data "aws_iam_policy" "fetched_policies" {
-  for_each = toset(var.role_policies)
-  name     = each.key
+  for_each = toset([
+    for policy in var.role_policies :
+    reverse(split("policy/", policy))[0] # Extract just the policy name from ARN
+    if can(regex("^arn:aws:iam::aws:policy/", policy)) # Only process AWS managed policies
+  ])
+  name = each.key
 }
 
 # Describe the trust entity
