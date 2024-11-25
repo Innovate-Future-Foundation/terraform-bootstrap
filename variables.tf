@@ -21,7 +21,13 @@ variable "repos" {
 variable "repo_permission" {
   type = map(list(string))
   default = {
-    "access-control" = ["IAMFullAccess"]
+    "access-control" = [
+      "IAMFullAccess",
+      "AWSConfigRoleForOrganizations",                    # For Organization management
+      "AWSSSOMemberAccountAdministrator",                 # For SSO management
+      "arn:aws:iam::aws:policy/IAMUserChangePassword",    # Allow password changes
+      "arn:aws:iam::aws:policy/IAMReadOnlyAccess"        # Read IAM configurations
+    ]
   }
 }
 

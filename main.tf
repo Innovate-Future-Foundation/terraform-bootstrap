@@ -11,7 +11,7 @@ terraform {
   }
 
   # Backend Skeleton
-  backend "s3" {}
+  # backend "s3" {}
 }
 
 provider "aws" {
@@ -23,6 +23,11 @@ module "oidc_provider" {
   source              = "./modules/oidc"
   provider_thumbprint = var.oidc_provider_thumbprint
   audience_url        = var.oidc_audience_url
+}
+
+# IAM SSO Role and Policies
+module "iam_sso" {
+  source = "./modules/iam"
 }
 
 # Assume Roles with OIDC
