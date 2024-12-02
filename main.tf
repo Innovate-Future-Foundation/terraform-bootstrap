@@ -86,7 +86,6 @@ module "terraform_locks" {
 
 locals {
   tags = {
-    Environment = var.environment
     ManagedBy   = "Terraform"
   }
 }

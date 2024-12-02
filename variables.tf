@@ -44,13 +44,3 @@ variable "oidc_provider_thumbprint" {
   type = string
   description = "The thumbprint of the OIDC provider"
 }
-
-variable "environment" {
-  type        = string
-  description = "Environment name (e.g., dev, prod, staging)"
-  default     = "prod"
-  validation {
-    condition     = contains(["dev", "staging", "prod"], var.environment)
-    error_message = "Environment must be dev, staging, or prod"
-  }
-}
