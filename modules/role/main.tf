@@ -4,16 +4,24 @@ locals {
 
   # AWS oidc audience url
   audience_url = var.audience_url
+
+  # Separate AWS managed policies from custom policies
+  aws_managed_policies = [
+    for policy in var.role_policies : policy
+    if !contains(["SAMLProviderManagementPolicy"], policy)
+  ]
+
+  # Only include custom policies if they exist in custom_policy_arns
+  custom_policies = [
+    for policy in var.role_policies : policy
+    if contains(keys(var.custom_policy_arns), policy)
+  ]
 }
 
-# Example policy
+# Only fetch AWS managed policies
 data "aws_iam_policy" "fetched_policies" {
-  for_each = toset([
-    for policy in var.role_policies :
-    reverse(split("policy/", policy))[0] # Extract just the policy name from ARN
-    if can(regex("^arn:aws:iam::aws:policy/", policy)) # Only process AWS managed policies
-  ])
-  name = each.key
+  for_each = toset(local.aws_managed_policies)
+  name     = each.key
 }
 
 # Describe the trust entity
@@ -46,8 +54,20 @@ resource "aws_iam_role" "repo_role" {
   assume_role_policy = data.aws_iam_policy_document.assume_policy.json
 }
 
-# Assign permission policy to role
-resource "aws_iam_role_policy_attachments_exclusive" "attach_policy" {
-  role_name   = aws_iam_role.repo_role.name
-  policy_arns = [for policy in data.aws_iam_policy.fetched_policies : policy.arn]
+# Attach AWS managed policies
+resource "aws_iam_role_policy_attachment" "managed_policy_attachment" {
+  for_each = data.aws_iam_policy.fetched_policies
+
+  role       = aws_iam_role.repo_role.name
+  policy_arn = each.value.arn
+}
+
+# Attach custom policies only if they exist
+resource "aws_iam_role_policy_attachment" "custom_policy_attachment" {
+  for_each = toset(local.custom_policies)
+
+  role       = aws_iam_role.repo_role.name
+  policy_arn = var.custom_policy_arns[each.value]
+
+  depends_on = [aws_iam_role.repo_role]
 }

@@ -28,18 +28,28 @@ module "oidc_provider" {
 # IAM SSO Role and Policies
 module "iam_sso" {
   source = "./modules/iam"
+  tags   = local.tags
 }
 
 # Assume Roles with OIDC
 module "repo_roles" {
-  for_each      = toset(var.repos)
-  source        = "./modules/role"
-  oidc          = module.oidc_provider.github
-  role_policies = var.repo_permission[each.key]
-  audience_url  = var.oidc_audience_url
-  org_abbr      = var.org_abbr
+  source   = "./modules/role"
+  for_each = toset(var.repos)
   orgnisation   = var.orgnisation
+  org_abbr      = var.org_abbr
   repo_name     = each.key
+  role_policies = var.repo_permission[each.key]
+
+  custom_policy_arns = {
+    "SAMLProviderManagementPolicy" = module.iam_sso.saml_policy_arn
+  }
+
+  oidc = {
+    arn = module.oidc_provider.provider_arn
+    url = "token.actions.githubusercontent.com"
+  }
+
+  depends_on = [module.iam_sso]
 }
 
 # Bucket prefix
@@ -72,4 +82,11 @@ module "terraform_locks" {
   source         = "./modules/db"
   table_name     = "${var.org_abbr}-${each.key}-tflock"
   principal_role = module.repo_roles[each.key].role_obj
+}
+
+locals {
+  tags = {
+    Environment = var.environment
+    ManagedBy   = "Terraform"
+  }
 }

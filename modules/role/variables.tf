@@ -3,25 +3,38 @@ variable "oidc" {
     arn = string
     url = string
   })
-}
-
-variable "role_policies" {
-  type = list(string)
-}
-
-variable "audience_url" {
-  type    = string
-  default = "sts.amazonaws.com"
-}
-
-variable "org_abbr" {
-  type = string
+  description = "OIDC provider configuration"
 }
 
 variable "orgnisation" {
-  type = string
+  description = "GitHub organization name"
+  type        = string
+}
+
+variable "org_abbr" {
+  description = "Organization abbreviation for naming"
+  type        = string
 }
 
 variable "repo_name" {
-  type = string
+  description = "Repository name"
+  type        = string
 }
+
+variable "role_policies" {
+  description = "List of policy names to attach to the role"
+  type        = list(string)
+}
+
+variable "custom_policy_arns" {
+  description = "Map of custom policy names to their ARNs"
+  type        = map(string)
+  default     = {}
+}
+
+variable "audience_url" {
+  description = "The audience URL for the OIDC provider"
+  type        = string
+  default     = "sts.amazonaws.com"  # Default AWS STS endpoint
+}
+

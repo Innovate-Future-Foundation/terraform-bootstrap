@@ -25,8 +25,7 @@ variable "repo_permission" {
       "IAMFullAccess",
       "AWSConfigRoleForOrganizations",                    # For Organization management
       "AWSSSOMemberAccountAdministrator",                 # For SSO management
-      "arn:aws:iam::aws:policy/IAMUserChangePassword",    # Allow password changes
-      "arn:aws:iam::aws:policy/IAMReadOnlyAccess"        # Read IAM configurations
+      "SAMLProviderManagementPolicy"
     ]
   }
 }
@@ -43,4 +42,14 @@ variable "oidc_audience_url" {
 
 variable "oidc_provider_thumbprint" {
   type = string
+  description = "The thumbprint of the OIDC provider"
+}
+
+variable "environment" {
+  type        = string
+  description = "Environment name (e.g., dev, prod, staging)"
+  validation {
+    condition     = contains(["dev", "staging", "prod"], var.environment)
+    error_message = "Environment must be dev, staging, or prod"
+  }
 }
