@@ -31,8 +31,9 @@ variable "repo_permission" {
 }
 
 variable "oidc_provider_url" {
+  description = "The URL for the OIDC token endpoint"
   type    = string
-  default = "https://token.actions.githubusercontent.com"
+  default = "https://token.actions.githubusercontent.com" # Default to GitHub Actions
 }
 
 variable "oidc_audience_url" {

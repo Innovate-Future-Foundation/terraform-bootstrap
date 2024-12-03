@@ -46,7 +46,7 @@ module "repo_roles" {
 
   oidc = {
     arn = module.oidc_provider.provider_arn
-    url = "token.actions.githubusercontent.com"
+    url = var.oidc_provider_url
   }
 
   depends_on = [module.iam_sso]
