@@ -31,18 +31,27 @@ module "iam_sso" {
   tags   = local.tags
 }
 
+# Configuration Module
+module "config" {
+  source = "./modules/config"
+  policy_arns = {
+    SAMLProviderManagementPolicy = {
+      arn         = module.iam_sso.saml_policy_arn
+      description = "Policy for managing SAML providers"
+    }
+  }
+}
+
 # Assume Roles with OIDC
 module "repo_roles" {
-  source   = "./modules/role"
-  for_each = toset(var.repos)
-  organisation   = var.organisation
+  source        = "./modules/role"
+  for_each      = toset(var.repos)
+  organisation  = var.organisation
   org_abbr      = var.org_abbr
   repo_name     = each.key
   role_policies = var.repo_permission[each.key]
 
-  custom_policy_arns = {
-    "SAMLProviderManagementPolicy" = module.iam_sso.saml_policy_arn
-  }
+  custom_policy_arns = module.config.custom_policy_arns
 
   oidc = {
     arn = module.oidc_provider.provider_arn
