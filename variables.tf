@@ -3,7 +3,7 @@ variable "location" {
   default = "us-west-2"
 }
 
-variable "orgnisation" {
+variable "organisation" {
   type    = string
   default = "Innovate-Future-Foundation"
 }

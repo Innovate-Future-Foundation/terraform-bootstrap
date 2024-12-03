@@ -6,8 +6,8 @@ variable "oidc" {
   description = "OIDC provider configuration"
 }
 
-variable "orgnisation" {
-  description = "GitHub organization name"
+variable "organisation" {
+  description = "GitHub organisation name"
   type        = string
 }
 

@@ -35,7 +35,7 @@ module "iam_sso" {
 module "repo_roles" {
   source   = "./modules/role"
   for_each = toset(var.repos)
-  orgnisation   = var.orgnisation
+  organisation   = var.organisation
   org_abbr      = var.org_abbr
   repo_name     = each.key
   role_policies = var.repo_permission[each.key]
