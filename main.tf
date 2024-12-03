@@ -25,21 +25,10 @@ module "oidc_provider" {
   audience_url        = var.oidc_audience_url
 }
 
-# IAM SSO Role and Policies
-module "iam_sso" {
-  source = "./modules/iam"
+# IAM Policies
+module "policy" {
+  source = "./modules/policy"
   tags   = local.tags
-}
-
-# Configuration Module
-module "config" {
-  source = "./modules/config"
-  policy_arns = {
-    SAMLProviderManagementPolicy = {
-      arn         = module.iam_sso.saml_policy_arn
-      description = "Policy for managing SAML providers"
-    }
-  }
 }
 
 # Assume Roles with OIDC
@@ -50,15 +39,11 @@ module "repo_roles" {
   org_abbr      = var.org_abbr
   repo_name     = each.key
   role_policies = var.repo_permission[each.key]
+  oidc          = module.oidc_provider.github
 
-  custom_policy_arns = module.config.custom_policy_arns
+  custom_policy_arns = module.policy.custom_policy_arns
 
-  oidc = {
-    arn = module.oidc_provider.provider_arn
-    url = var.oidc_provider_url
-  }
-
-  depends_on = [module.iam_sso]
+  depends_on = [module.policy]
 }
 
 # Bucket prefix

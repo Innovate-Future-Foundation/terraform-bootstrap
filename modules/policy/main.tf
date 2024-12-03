@@ -1,6 +1,19 @@
 locals {
   role_name   = "SAMLProviderManagementRole"
   policy_name = "SAMLProviderManagementPolicy"
+
+  # Transform the input policy ARNs into the required format
+  custom_policy_arns = {
+    SAMLProviderManagementPolicy = aws_iam_policy.saml_provider_management.arn
+  }
+
+  # Policy metadata
+  policy_metadata = {
+    SAMLProviderManagementPolicy = {
+      arn         = aws_iam_policy.saml_provider_management.arn
+      description = "Policy for managing SAML providers"
+    }
+  }
 }
 
 # Define the custom IAM policy
