@@ -15,6 +15,19 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+      - name: Get latest commit message
+        id: commit
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: commits } = await github.rest.pulls.listCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+            const lastCommit = commits[commits.length - 1];
+            core.setOutput('message', lastCommit.commit.message);
+
       - name: Discord PR Notification
         if: github.event_name == 'pull_request'
         env:
@@ -24,7 +37,7 @@ jobs:
           args: |
             ${{ github.event.action == 'opened' && '🆕 **New Pull Request**' || '🔄 **Pull Request Updated**' }}
 
-            **Latest Commit:** ${{ github.event.pull_request.head.sha }} - ${{ github.event.pull_request.head.label }}
+            **Latest Commit:** ${{ steps.commit.outputs.message }}
 
             **Description:** 📝
             ${{ github.event.pull_request.body }}
