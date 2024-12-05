@@ -33,6 +33,7 @@ jobs:
 
       - name: Discord PR Notification
         if: github.event_name == 'pull_request' && !github.event.pull_request.draft
+        continue-on-error: true
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
