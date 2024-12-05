@@ -25,16 +25,25 @@ module "oidc_provider" {
   audience_url        = var.oidc_audience_url
 }
 
+# IAM Policies
+module "policy" {
+  source = "./modules/policy"
+  tags   = local.tags
+}
+
 # Assume Roles with OIDC
 module "repo_roles" {
-  for_each      = toset(var.repos)
   source        = "./modules/role"
-  oidc          = module.oidc_provider.github
-  role_policies = var.repo_permission[each.key]
-  audience_url  = var.oidc_audience_url
+  for_each      = toset(var.repos)
+  organisation  = var.organisation
   org_abbr      = var.org_abbr
-  orgnisation   = var.orgnisation
   repo_name     = each.key
+  role_policies = var.repo_permission[each.key]
+  oidc          = module.oidc_provider.github
+
+  custom_policy_arns = module.policy.custom_policy_arns
+
+  depends_on = [module.policy]
 }
 
 # Bucket prefix
@@ -67,4 +76,10 @@ module "terraform_locks" {
   source         = "./modules/db"
   table_name     = "${var.org_abbr}-${each.key}-tflock"
   principal_role = module.repo_roles[each.key].role_obj
+}
+
+locals {
+  tags = {
+    ManagedBy   = "Terraform"
+  }
 }

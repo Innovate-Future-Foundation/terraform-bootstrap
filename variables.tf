@@ -3,7 +3,7 @@ variable "location" {
   default = "us-west-2"
 }
 
-variable "orgnisation" {
+variable "organisation" {
   type    = string
   default = "Innovate-Future-Foundation"
 }
@@ -21,13 +21,19 @@ variable "repos" {
 variable "repo_permission" {
   type = map(list(string))
   default = {
-    "access-control" = ["IAMFullAccess"]
+    "access-control" = [
+      "IAMFullAccess",
+      "AWSConfigRoleForOrganizations",                    # For Organization management
+      "AWSSSOMemberAccountAdministrator",                 # For SSO management
+      "SAMLProviderManagementPolicy"
+    ]
   }
 }
 
 variable "oidc_provider_url" {
+  description = "The URL for the OIDC token endpoint"
   type    = string
-  default = "https://token.actions.githubusercontent.com"
+  default = "https://token.actions.githubusercontent.com" # Default to GitHub Actions
 }
 
 variable "oidc_audience_url" {
@@ -37,4 +43,5 @@ variable "oidc_audience_url" {
 
 variable "oidc_provider_thumbprint" {
   type = string
+  description = "The thumbprint of the OIDC provider"
 }
