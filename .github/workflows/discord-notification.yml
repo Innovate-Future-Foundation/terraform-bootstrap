@@ -32,7 +32,7 @@ jobs:
             core.setOutput('message', lastCommit.commit.message);
 
       - name: Discord PR Notification
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && !github.event.pull_request.draft
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
