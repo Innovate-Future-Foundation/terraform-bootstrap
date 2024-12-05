@@ -31,8 +31,10 @@ jobs:
             **Lines Added:** +${{ github.event.pull_request.additions }}
             **Lines Removed:** -${{ github.event.pull_request.deletions }}
 
-            📝 **Description:**
+            **Description:**
+            ```
             ${{ github.event.pull_request.body }}
+            ```
 
             🔗 **Link:** ${{ github.event.pull_request.html_url }}
 
