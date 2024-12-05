@@ -1,0 +1,16 @@
+name: Discord Notification
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: '🔔 New PR: "${{ github.event.pull_request.title }}" by ${{ github.event.pull_request.user.login }}\n📎 ${{ github.event.pull_request.html_url }}'
