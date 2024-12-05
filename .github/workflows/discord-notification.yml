@@ -25,16 +25,14 @@ jobs:
             **New Pull Request Activity!** 🚀
 
             **Title:** ${{ github.event.pull_request.title }}
-            **Author:** ${{ github.event.pull_request.user.login }}
-            **Status:** ${{ github.event.pull_request.state }} ${{ github.event.pull_request.merged && '(Merged) 🎉' || '' }}
-            **Changed Files:** ${{ github.event.pull_request.changed_files }}
-            **Lines Added:** +${{ github.event.pull_request.additions }}
-            **Lines Removed:** -${{ github.event.pull_request.deletions }}
+            **Author:** ${{ github.event.pull_request.user.login }} 👩‍💻
+            **Status:** ${{ github.event.pull_request.state }} ⚡
+            **Changed Files:** ${{ github.event.pull_request.changed_files }} 📁
+            **Lines Added:** +${{ github.event.pull_request.additions }} ✨
+            **Lines Removed:** -${{ github.event.pull_request.deletions }} 🗑️
 
-            **Description:**
-            ```
+            **Description:** 📝
             ${{ github.event.pull_request.body }}
-            ```
 
             🔗 **Link:** ${{ github.event.pull_request.html_url }}
 
