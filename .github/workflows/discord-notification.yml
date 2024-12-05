@@ -24,6 +24,8 @@ jobs:
           args: |
             ${{ github.event.action == 'opened' && '🆕 **New Pull Request**' || '🔄 **Pull Request Updated**' }}
 
+            ${{ github.event.action != 'opened' && format('**Latest Commit:** {0}', github.event.pull_request.head.commit.message) || '' }}
+
             **Description:** 📝
             ${{ github.event.pull_request.body }}
 
