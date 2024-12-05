@@ -105,6 +105,8 @@ jobs:
             **Workflow Run Completed** ⚡
 
             **Workflow:** ${{ github.event.workflow.name }}
+            **Branch:** ${{ github.ref_name }}
+            **Environment:** ${{ github.event.workflow_run.environment }}
             **Status:** ${{ github.event.workflow_run.conclusion }} ${{ github.event.workflow_run.conclusion == 'success' && '✅' || '❌' }}
             **Triggered by:** ${{ github.event.workflow_run.actor.login }}
 
