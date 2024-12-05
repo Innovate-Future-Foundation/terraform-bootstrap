@@ -22,14 +22,7 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: |
-            **New Pull Request Activity!** 🚀
-
-            **Title:** ${{ github.event.pull_request.title }}
-            **Author:** ${{ github.event.pull_request.user.login }} 👩‍💻
-            **Status:** ${{ github.event.pull_request.state }} ⚡
-            **Changed Files:** ${{ github.event.pull_request.changed_files }} 📁
-            **Lines Added:** +${{ github.event.pull_request.additions }} ✨
-            **Lines Removed:** -${{ github.event.pull_request.deletions }} 🗑️
+            ${{ github.event.action == 'opened' && '🆕 **New Pull Request**' || '🔄 **Pull Request Updated**' }}
 
             **Description:** 📝
             ${{ github.event.pull_request.body }}
