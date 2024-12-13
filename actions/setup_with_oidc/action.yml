@@ -1,4 +1,5 @@
 name: Setup terraform with oidc
+description: 'This action sets up Terraform with OIDC'
 inputs:
   terraform_version:
     description: 'Terraform Version'
@@ -21,7 +22,7 @@ inputs:
   aws_tflock_table:
     description: 'AWS Terraform Locking table'
     required: true
-  
+
 runs:
   using: 'composite'
   steps:
@@ -29,20 +30,21 @@ runs:
       name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
       with:
-        terraform_version: ${{ inputs.terraforom_version }}
-    
+        terraform_version: ${{ inputs.terraform_version }}
+
     - id: aws_auth
       name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
         aws-region: ${{ inputs.aws_region }}
         role-to-assume: ${{ inputs.aws_role_arn }}
-    
+
     - id: tf_init
       name: Init Terraform
       working-directory: ${{ inputs.terraform_dir }}
       shell: bash
       run: |
+        # Terraform后端初始化:配置S3存储tfstate,DynamoDB用于锁定
         terraform init \
           -backend-config="bucket=${{ inputs.aws_tfstate_bucket }}" \
           -backend-config="key=${{ inputs.aws_tfstate_key }}" \
