@@ -43,7 +43,6 @@ runs:
       working-directory: ${{ inputs.terraform_dir }}
       shell: bash
       run: |
-        # Terraform后端初始化:配置S3存储tfstate,DynamoDB用于锁定
         terraform init \
           -backend-config="bucket=${{ inputs.aws_tfstate_bucket }}" \
           -backend-config="key=${{ inputs.aws_tfstate_key }}" \
