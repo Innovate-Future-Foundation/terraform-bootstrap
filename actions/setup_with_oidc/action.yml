@@ -1,37 +1,36 @@
 name: Setup terraform with oidc
-description: 'This action sets up Terraform with OIDC'
+description: "This action sets up Terraform with OIDC"
 inputs:
   terraform_version:
-    description: 'Terraform Version'
+    description: "Terraform Version"
     required: true
   terraform_dir:
-    description: 'Working directory of terraform'
+    description: "Working directory of terraform"
     required: true
   aws_region:
-    description: 'AWS Resource Region'
+    description: "AWS Resource Region"
     required: true
   aws_role_arn:
-    description: 'AWS Role to assume'
+    description: "AWS Role to assume"
     required: true
   aws_tfstate_bucket:
-    description: 'AWS Backend Bucket'
+    description: "AWS Backend Bucket"
     required: true
   aws_tfstate_key:
-    description: 'AWS Terraform State File Key'
+    description: "AWS Terraform State File Key"
     required: true
   aws_tflock_table:
-    description: 'AWS Terraform Locking table'
+    description: "AWS Terraform Locking table"
     required: true
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - id: tf_setup
       name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: ${{ inputs.terraform_version }}
-
     - id: aws_auth
       name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2

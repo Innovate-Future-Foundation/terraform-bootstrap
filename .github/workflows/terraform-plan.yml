@@ -47,7 +47,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           planfile: .planfile
-      
+
       - name: Upload Plan to S3
         run: |
           aws s3 cp .planfile s3://${{ secrets.S3_REPO_ARTIFACT_BUCKET }}/plans/plan-pr_${{ github.event.pull_request.number }}

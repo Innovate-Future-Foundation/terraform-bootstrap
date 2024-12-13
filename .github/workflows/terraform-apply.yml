@@ -1,14 +1,13 @@
 name: Terraform Apply
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
     inputs:
       pr_number:
         description: The Pull Request number
         required: true
         type: number
-
 
 permissions:
   id-token: write # This is required for requesting the JWT (OIDC)
@@ -57,7 +56,7 @@ jobs:
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - id: dl_tf_plan
         name: Download Plan from S3
         run: |
