@@ -8,7 +8,7 @@ variable "principal_role" {
   })
 }
 
-variable "lifecycle_expiration_days" {
+variable "planfile_expiration_days" {
   type    = number
   default = 30
 }
