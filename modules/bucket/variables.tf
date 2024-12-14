@@ -7,3 +7,8 @@ variable "principal_role" {
     arn = string
   })
 }
+
+variable "plan_file_expiration_days" {
+  type    = number
+  default = 30
+}
