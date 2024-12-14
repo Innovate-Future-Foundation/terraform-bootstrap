@@ -10,7 +10,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "bkt_lifecycle" {
     }
 
     expiration {
-      days = var.planfile_expiration_days
+      days = var.plan_file_expiration_days
     }
   }
 }
