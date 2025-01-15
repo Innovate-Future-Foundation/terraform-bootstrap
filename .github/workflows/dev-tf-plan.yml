@@ -1,4 +1,4 @@
-name: Terraform Plan
+name: Dev - Terraform Plan
 on:
   pull_request:
     branches:
@@ -12,7 +12,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  terraform_plan:
+  dev_terraform_plan:
     environment:
       name: Development
     env:
@@ -58,7 +58,7 @@ jobs:
         uses: borchero/terraform-plan-comment@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          planfile: .planfile
+          planfile: ${{ env.tf_dir }}/.planfile
 
       - name: Upload Plan to S3
         run: |
