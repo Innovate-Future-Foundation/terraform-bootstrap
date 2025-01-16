@@ -17,7 +17,7 @@ jobs:
       name: Development
     env:
       tf_version: "1.10.2"
-      tf_dir: "./dev"
+      tf_dir: "dev"
 
     runs-on: ubuntu-22.04
     defaults:
@@ -63,5 +63,5 @@ jobs:
 
       - name: Upload Plan to S3
         run: |
-          aws s3 cp .planfile s3://${{ secrets.WORKFLOW_TEMP_BUCKET }}/plans/plan-pr_${{ github.event.pull_request.number }}_${{ env.tf_dir }}
+          aws s3 cp .planfile s3://${{ secrets.WORKFLOW_TEMP_BUCKET }}/plans/plan-${{ github.event.pull_request.number }}_${{ env.tf_dir }}
           echo "Plan uploaded to S3"
