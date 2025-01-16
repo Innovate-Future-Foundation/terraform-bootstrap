@@ -52,6 +52,7 @@ jobs:
           # Non-blank value will overwrite the terraform fetched thumbprint
           TF_VAR_oidc_provider_thumbprint: ""
           TF_VAR_location: ${{ secrets.AWS_REGION }}
+          TF_VAR_dev_bootstrap_role: ${{ secrets.AWS_DEV_BOOTSTRAP_ROLE }}
 
       - id: post_comment
         name: Post Terraform Plan to PR

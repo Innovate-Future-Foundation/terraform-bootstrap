@@ -3,6 +3,10 @@ variable "location" {
   default = "us-west-2"
 }
 
+variable "dev_bootstrap_role" {
+  type    = string
+}
+
 variable "organisation" {
   type    = string
   default = "Innovate-Future-Foundation"
@@ -15,18 +19,25 @@ variable "org_abbr" {
 
 variable "repos" {
   type    = list(string)
-  default = ["access-control"]
+  default = [
+    # "access-control"
+    ]
+}
+
+variable "sso_repo" {
+  type = string
+  default = "access-control"
 }
 
 variable "repo_permission" {
   type = map(list(string))
   default = {
-    "access-control" = [
-      "IAMFullAccess",
-      "AWSConfigRoleForOrganizations",                    # For Organization management
-      "AWSSSOMemberAccountAdministrator",                 # For SSO management
-      "SAMLProviderManagementPolicy"
-    ]
+    # "access-control" = [
+    #   "IAMFullAccess",
+    #   "AWSConfigRoleForOrganizations",                    # For Organization management
+    #   "AWSSSOMemberAccountAdministrator",                 # For SSO management
+    #   "SAMLProviderManagementPolicy"
+    # ]
   }
 }
 
