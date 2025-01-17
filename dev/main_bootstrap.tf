@@ -7,8 +7,9 @@ provider "aws" {
 }
 
 locals {
-  tags = {
+  general_tags = {
     ManagedBy   = "Terraform"
+    Usage       = "TerraformBootstrap"
   }
 }
 
@@ -22,7 +23,7 @@ module "oidc_provider" {
 # IAM Policies
 module "policy" {
   source = "../modules/policy"
-  tags   = local.tags
+  tags   = local.general_tags
 }
 
 # Assume Roles with OIDC

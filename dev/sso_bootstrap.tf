@@ -1,10 +1,9 @@
 # Management account 
 provider "aws" {
   region = var.location
+  alias = "management_account"
 }
 
-locals {
-}
 locals {
   sso_custom_policy = "SSOManagementPowerUser"
   # SSO Required Policies
@@ -15,20 +14,25 @@ locals {
       "SSOManagementPowerUser"
     ]
 
-  tags = {
+  sso_tags = {
     ManagedBy   = "Terraform"
+    Usage       = "SSOTerraformBootstrap"
   }
 }
 
 # OIDC Provider
 module "oidc_provider" {
+  providers = {
+    aws = aws.management_account
+  }
   source              = "../modules/oidc"
   provider_thumbprint = var.oidc_provider_thumbprint
   audience_url        = var.oidc_audience_url
 }
 
 # SSO Required Policy
-resource "aws_iam_policy" "saml_provider_management" {
+resource "aws_iam_policy" "sso_custom_policy" {
+  provider = aws.management_account
   name        = local.sso_custom_policy
   description = "Custom policy for managing Organisation SSO Users"
   policy      = jsonencode({
@@ -58,11 +62,14 @@ resource "aws_iam_policy" "saml_provider_management" {
       }
     ]
   })
-  tags = local.tags
+  tags = local.sso_tags
 }
 
 # Assume Roles with OIDC
-module "repo_roles" {
+module "sso_repo_role" {
+  providers = {
+    aws = aws.management_account
+  }
   source        = "../modules/role"
   organisation  = var.organisation
   org_abbr      = var.org_abbr
@@ -71,12 +78,12 @@ module "repo_roles" {
   oidc          = module.oidc_provider.github
 
   custom_policy_arns = {
-    local.sso_custom_policy = aws_iam_policy.saml_provider_management.arn
+    local.sso_custom_policy = aws_iam_policy.sso_custom_policy.arn
   }
 }
 
 # Bucket prefix
-resource "random_password" "prefix" {
+resource "random_password" "sso_bucket_prefix" {
   length  = 5
   numeric = true
   special = false
@@ -85,23 +92,31 @@ resource "random_password" "prefix" {
 }
 
 # Workflow Artifact
-module "workflow_artifact" {
+module "sso_workflow_artifact" {
+  providers = {
+    aws = aws.management_account
+  }
   source         = "../modules/bucket"
   bucket_name    = "${var.org_abbr}-${random_password.prefix.result}-${var.sso_repo}-workflow-artifact"
   principal_role = module.repo_roles.role_obj
 }
 
 # Terraform states
-module "terraform_state" {
+module "sso_terraform_state" {
+  providers = {
+    aws = aws.management_account
+  }
   source         = "../modules/bucket"
   bucket_name    = "${var.org_abbr}-${random_password.prefix.result}-${var.sso_repo}-tfstate"
   principal_role = module.repo_roles.role_obj
 }
 
 # Terraform LockIDs
-module "terraform_locks" {
+module "sso_terraform_locks" {
+  providers = {
+    aws = aws.management_account
+  }
   source         = "../modules/db"
   table_name     = "${var.org_abbr}-${var.sso_repo}-tflock"
   principal_role = module.repo_roles.role_obj
 }
-
