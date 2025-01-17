@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.1"
+    }
+  }
+}
+
 resource "aws_s3_bucket" "bkt" {
   bucket = var.bucket_name
 

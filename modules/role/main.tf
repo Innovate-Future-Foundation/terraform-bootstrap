@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.1"
+    }
+  }
+}
+
 locals {
   # Full Repository name including Organisation name
   full_repo_name = "${var.organisation}/${var.repo_name}"

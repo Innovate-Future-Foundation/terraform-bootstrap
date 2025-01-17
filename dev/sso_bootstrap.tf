@@ -21,7 +21,7 @@ locals {
 }
 
 # OIDC Provider
-module "oidc_provider" {
+module "sso_oidc_provider" {
   providers = {
     aws = aws.management_account
   }
