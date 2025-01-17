@@ -75,10 +75,10 @@ module "sso_repo_role" {
   org_abbr      = var.org_abbr
   repo_name     = var.sso_repo
   role_policies = local.sso_required_policies
-  oidc          = module.oidc_provider.github
+  oidc          = module.sso_oidc_provider.github
 
   custom_policy_arns = {
-    local.sso_custom_policy = aws_iam_policy.sso_custom_policy.arn
+    (local.sso_custom_policy) = aws_iam_policy.sso_custom_policy.arn
   }
 }
 
@@ -98,7 +98,7 @@ module "sso_workflow_artifact" {
   }
   source         = "../modules/bucket"
   bucket_name    = "${var.org_abbr}-${random_password.prefix.result}-${var.sso_repo}-workflow-artifact"
-  principal_role = module.repo_roles.role_obj
+  principal_role = module.sso_repo_role.role_obj
 }
 
 # Terraform states
@@ -108,7 +108,7 @@ module "sso_terraform_state" {
   }
   source         = "../modules/bucket"
   bucket_name    = "${var.org_abbr}-${random_password.prefix.result}-${var.sso_repo}-tfstate"
-  principal_role = module.repo_roles.role_obj
+  principal_role = module.sso_repo_role.role_obj
 }
 
 # Terraform LockIDs
@@ -118,5 +118,5 @@ module "sso_terraform_locks" {
   }
   source         = "../modules/db"
   table_name     = "${var.org_abbr}-${var.sso_repo}-tflock"
-  principal_role = module.repo_roles.role_obj
+  principal_role = module.sso_repo_role.role_obj
 }
