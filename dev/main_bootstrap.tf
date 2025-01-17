@@ -73,4 +73,3 @@ module "terraform_locks" {
   table_name     = "${var.org_abbr}-${each.key}-tflock"
   principal_role = module.repo_roles[each.key].role_obj
 }
-
