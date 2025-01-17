@@ -1,22 +1,22 @@
 # Management account 
 provider "aws" {
   region = var.location
-  alias = "management_account"
+  alias  = "management_account"
 }
 
 locals {
   sso_custom_policy = "SSOManagementPowerUser"
   # SSO Required Policies
   sso_required_policies = [
-      "IAMFullAccess",
-      "AWSConfigRoleForOrganizations",                    # For Organization management
-      "AWSSSOMemberAccountAdministrator",                 # For SSO management
-      "SSOManagementPowerUser"
-    ]
+    "IAMFullAccess",
+    "AWSConfigRoleForOrganizations",    # For Organization management
+    "AWSSSOMemberAccountAdministrator", # For SSO management
+    "SSOManagementPowerUser"
+  ]
 
   sso_tags = {
-    ManagedBy   = "Terraform"
-    Usage       = "SSOTerraformBootstrap"
+    ManagedBy = "Terraform"
+    Usage     = "SSOTerraformBootstrap"
   }
 }
 
@@ -32,10 +32,10 @@ module "sso_oidc_provider" {
 
 # SSO Required Policy
 resource "aws_iam_policy" "sso_custom_policy" {
-  provider = aws.management_account
+  provider    = aws.management_account
   name        = local.sso_custom_policy
   description = "Custom policy for managing Organisation SSO Users"
-  policy      = jsonencode({
+  policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
@@ -74,6 +74,7 @@ module "sso_repo_role" {
   organisation  = var.organisation
   org_abbr      = var.org_abbr
   repo_name     = var.sso_repo
+  repo_env      = var.repo_env
   role_policies = local.sso_required_policies
   oidc          = module.sso_oidc_provider.github
 

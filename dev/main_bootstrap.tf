@@ -8,8 +8,8 @@ provider "aws" {
 
 locals {
   general_tags = {
-    ManagedBy   = "Terraform"
-    Usage       = "TerraformBootstrap"
+    ManagedBy = "Terraform"
+    Usage     = "TerraformBootstrap"
   }
 }
 
@@ -33,6 +33,7 @@ module "repo_roles" {
   organisation  = var.organisation
   org_abbr      = var.org_abbr
   repo_name     = each.key
+  repo_env      = var.repo_env
   role_policies = var.repo_permission[each.key]
   oidc          = module.oidc_provider.github
 

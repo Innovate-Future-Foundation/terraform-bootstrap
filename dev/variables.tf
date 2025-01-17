@@ -4,7 +4,7 @@ variable "location" {
 }
 
 variable "dev_bootstrap_role" {
-  type    = string
+  type = string
 }
 
 variable "organisation" {
@@ -17,16 +17,21 @@ variable "org_abbr" {
   default = "inff"
 }
 
+variable "repo_env" {
+  type    = string
+  default = "Development"
+}
+
 variable "sso_repo" {
-  type = string
+  type    = string
   default = "access-control"
 }
 
 variable "repos" {
-  type    = list(string)
+  type = list(string)
   default = [
     # "access-control"
-    ]
+  ]
 }
 
 variable "repo_permission" {
@@ -43,8 +48,8 @@ variable "repo_permission" {
 
 variable "oidc_provider_url" {
   description = "The URL for the OIDC token endpoint"
-  type    = string
-  default = "https://token.actions.githubusercontent.com" # Default to GitHub Actions
+  type        = string
+  default     = "https://token.actions.githubusercontent.com" # Default to GitHub Actions
 }
 
 variable "oidc_audience_url" {
@@ -53,6 +58,6 @@ variable "oidc_audience_url" {
 }
 
 variable "oidc_provider_thumbprint" {
-  type = string
+  type        = string
   description = "The thumbprint of the OIDC provider"
 }
