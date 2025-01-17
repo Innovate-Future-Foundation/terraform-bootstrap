@@ -17,16 +17,16 @@ variable "org_abbr" {
   default = "inff"
 }
 
+variable "sso_repo" {
+  type = string
+  default = "access-control"
+}
+
 variable "repos" {
   type    = list(string)
   default = [
     # "access-control"
     ]
-}
-
-variable "sso_repo" {
-  type = string
-  default = "access-control"
 }
 
 variable "repo_permission" {
