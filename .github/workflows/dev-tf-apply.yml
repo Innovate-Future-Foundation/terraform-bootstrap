@@ -25,7 +25,10 @@ jobs:
     env:
       tf_version: "1.10.2"
       tf_dir: "dev"
-    
+    defaults:
+      run:
+        working-directory: ${{ env.tf_dir }}
+
     runs-on: ubuntu-22.04
     steps:
       - id: checkout_latest
