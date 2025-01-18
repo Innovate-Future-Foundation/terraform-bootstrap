@@ -68,7 +68,7 @@ jobs:
       - id: dl_tf_plan
         name: Download Plan from S3
         run: |
-          aws s3 cp s3://${{ secrets.S3_REPO_ARTIFACT_BUCKET }}/plans/plan-${{ steps.get_pr_number.outputs.PR_NUMBER }}_${{ env.tf_dir }} tfplan
+          aws s3 cp s3://${{ secrets.WORKFLOW_TEMP_BUCKET }}/plans/plan-${{ steps.get_pr_number.outputs.PR_NUMBER }}_${{ env.tf_dir }} tfplan
           if [ $? -ne 0 ]; then
             echo "Failed to retrieve planfile. It may have expired or been deleted."
             exit 1
