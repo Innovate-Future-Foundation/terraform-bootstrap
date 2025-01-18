@@ -31,7 +31,7 @@ data "aws_iam_policy_document" "state_locks" {
 
     principals {
       type        = "AWS"
-      identifiers = ["${var.principal_role.arn}"]
+      identifiers = [var.principal_role.arn]
     }
 
     actions = [

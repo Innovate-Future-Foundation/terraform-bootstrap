@@ -68,6 +68,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - id: dl_tf_plan
+        if: steps.get_pr_number.outputs.PR_NUMBER != 0
         name: Download Plan from S3
         run: |
           aws s3 cp s3://${{ secrets.WORKFLOW_TEMP_BUCKET }}/plans/plan-${{ steps.get_pr_number.outputs.PR_NUMBER }}_${{ env.tf_dir }} tfplan
@@ -76,6 +77,12 @@ jobs:
             exit 1
           fi
 
-      - id: tf_apply
-        name: Terraform Apply
+      - id: tf_apply_tfplan
+        if: steps.get_pr_number.outputs.PR_NUMBER != 0
+        name: Terraform Apply tfplan
         run: terraform apply -auto-approve tfplan
+      
+      - id: tf_hot_apply
+        if: steps.get_pr_number.outputs.PR_NUMBER == 0
+        name: Terraform Fast Apply For Hotfix
+        run: terraform apply -auto-approve
