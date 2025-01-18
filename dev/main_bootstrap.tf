@@ -13,6 +13,7 @@ locals {
   general_tags = {
     ManagedBy = "Terraform"
     Usage     = "TerraformBootstrap"
+    Env       = "Development"
   }
 }
 

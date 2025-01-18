@@ -20,6 +20,7 @@ locals {
   sso_tags = {
     ManagedBy = "Terraform"
     Usage     = "SSOTerraformBootstrap"
+    Env       = "Development"
   }
 }
 
