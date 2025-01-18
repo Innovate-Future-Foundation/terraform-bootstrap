@@ -42,7 +42,7 @@ module "repo_roles" {
 }
 
 # Bucket prefix
-resource "random_password" "prefix" {
+resource "random_password" "bucket_suffix" {
   length  = 5
   numeric = true
   special = false
@@ -54,7 +54,7 @@ resource "random_password" "prefix" {
 module "workflow_artifact" {
   for_each       = toset(var.repos)
   source         = "../modules/bucket"
-  bucket_name    = "${var.org_abbr}-${random_password.prefix.result}-${each.key}-workflow-artifact"
+  bucket_name    = "${var.org_abbr}-${each.key}-workflow-artifact-${random_password.bucket_suffix.result}"
   principal_role = module.repo_roles[each.key].role_obj
 }
 
@@ -62,7 +62,7 @@ module "workflow_artifact" {
 module "terraform_state" {
   for_each       = toset(var.repos)
   source         = "../modules/bucket"
-  bucket_name    = "${var.org_abbr}-${random_password.prefix.result}-${each.key}-tfstate"
+  bucket_name    = "${var.org_abbr}-${each.key}-tfstate-${random_password.bucket_suffix.result}"
   principal_role = module.repo_roles[each.key].role_obj
 }
 
