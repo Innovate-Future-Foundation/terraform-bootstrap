@@ -4,6 +4,9 @@ provider "aws" {
   assume_role {
     role_arn = var.dev_bootstrap_role
   }
+  default_tags {
+    tags = local.general_tags
+  }
 }
 
 locals {
@@ -21,9 +24,8 @@ module "oidc_provider" {
 }
 
 # IAM Policies
-module "policy" {
+module "custom_policy" {
   source = "../modules/policy"
-  tags   = local.general_tags
 }
 
 # Assume Roles with OIDC

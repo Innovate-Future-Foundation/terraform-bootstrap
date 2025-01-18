@@ -2,6 +2,9 @@
 provider "aws" {
   region = var.location
   alias  = "management_account"
+  default_tags {
+    tags = local.sso_tags
+  }
 }
 
 locals {
@@ -62,7 +65,6 @@ resource "aws_iam_policy" "sso_custom_policy" {
       }
     ]
   })
-  tags = local.sso_tags
 }
 
 # Assume Roles with OIDC
