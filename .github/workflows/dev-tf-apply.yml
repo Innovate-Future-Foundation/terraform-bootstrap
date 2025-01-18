@@ -86,3 +86,8 @@ jobs:
         if: steps.get_pr_number.outputs.PR_NUMBER == 0
         name: Terraform Fast Apply For Hotfix
         run: terraform apply -auto-approve
+        env:
+          # Non-blank value will overwrite the terraform fetched thumbprint
+          TF_VAR_oidc_provider_thumbprint: ""
+          TF_VAR_location: ${{ secrets.AWS_REGION }}
+          TF_VAR_dev_bootstrap_role: ${{ secrets.AWS_DEV_BOOTSTRAP_ROLE }}
