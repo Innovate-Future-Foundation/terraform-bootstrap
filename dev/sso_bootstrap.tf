@@ -2,6 +2,9 @@
 provider "aws" {
   region = var.location
   alias  = "management_account"
+  default_tags {
+    tags = local.sso_tags
+  }
 }
 
 locals {
@@ -62,7 +65,6 @@ resource "aws_iam_policy" "sso_custom_policy" {
       }
     ]
   })
-  tags = local.sso_tags
 }
 
 # Assume Roles with OIDC
@@ -84,7 +86,7 @@ module "sso_repo_role" {
 }
 
 # Bucket prefix
-resource "random_password" "sso_bucket_prefix" {
+resource "random_password" "sso_bucket_suffix" {
   length  = 5
   numeric = true
   special = false
@@ -98,7 +100,7 @@ module "sso_workflow_artifact" {
     aws = aws.management_account
   }
   source         = "../modules/bucket"
-  bucket_name    = "${var.org_abbr}-${random_password.prefix.result}-${var.sso_repo}-workflow-artifact"
+  bucket_name    = "${var.org_abbr}-${var.sso_repo}-workflow-artifact-${random_password.sso_bucket_suffix.result}"
   principal_role = module.sso_repo_role.role_obj
 }
 
@@ -108,7 +110,7 @@ module "sso_terraform_state" {
     aws = aws.management_account
   }
   source         = "../modules/bucket"
-  bucket_name    = "${var.org_abbr}-${random_password.prefix.result}-${var.sso_repo}-tfstate"
+  bucket_name    = "${var.org_abbr}-${var.sso_repo}-tfstate-${random_password.sso_bucket_suffix.result}"
   principal_role = module.sso_repo_role.role_obj
 }
 

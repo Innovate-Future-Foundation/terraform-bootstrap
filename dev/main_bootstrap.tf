@@ -4,6 +4,9 @@ provider "aws" {
   assume_role {
     role_arn = var.dev_bootstrap_role
   }
+  default_tags {
+    tags = local.general_tags
+  }
 }
 
 locals {
@@ -21,29 +24,25 @@ module "oidc_provider" {
 }
 
 # IAM Policies
-module "policy" {
+module "custom_policy" {
   source = "../modules/policy"
-  tags   = local.general_tags
 }
 
 # Assume Roles with OIDC
 module "repo_roles" {
-  source        = "../modules/role"
-  for_each      = toset(var.repos)
-  organisation  = var.organisation
-  org_abbr      = var.org_abbr
-  repo_name     = each.key
-  repo_env      = var.repo_env
-  role_policies = var.repo_permission[each.key]
-  oidc          = module.oidc_provider.github
-
-  custom_policy_arns = module.policy.custom_policy_arns
-
-  depends_on = [module.policy]
+  source             = "../modules/role"
+  for_each           = toset(var.repos)
+  organisation       = var.organisation
+  org_abbr           = var.org_abbr
+  repo_name          = each.key
+  repo_env           = var.repo_env
+  role_policies      = var.repo_permission[each.key]
+  oidc               = module.oidc_provider.github
+  custom_policy_arns = module.custom_policy.custom_policy_arns
 }
 
 # Bucket prefix
-resource "random_password" "prefix" {
+resource "random_password" "bucket_suffix" {
   length  = 5
   numeric = true
   special = false
@@ -55,7 +54,7 @@ resource "random_password" "prefix" {
 module "workflow_artifact" {
   for_each       = toset(var.repos)
   source         = "../modules/bucket"
-  bucket_name    = "${var.org_abbr}-${random_password.prefix.result}-${each.key}-workflow-artifact"
+  bucket_name    = "${var.org_abbr}-${each.key}-workflow-artifact-${random_password.bucket_suffix.result}"
   principal_role = module.repo_roles[each.key].role_obj
 }
 
@@ -63,7 +62,7 @@ module "workflow_artifact" {
 module "terraform_state" {
   for_each       = toset(var.repos)
   source         = "../modules/bucket"
-  bucket_name    = "${var.org_abbr}-${random_password.prefix.result}-${each.key}-tfstate"
+  bucket_name    = "${var.org_abbr}-${each.key}-tfstate-${random_password.bucket_suffix.result}"
   principal_role = module.repo_roles[each.key].role_obj
 }
 
