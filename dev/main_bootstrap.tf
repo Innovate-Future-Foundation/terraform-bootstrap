@@ -30,18 +30,15 @@ module "custom_policy" {
 
 # Assume Roles with OIDC
 module "repo_roles" {
-  source        = "../modules/role"
-  for_each      = toset(var.repos)
-  organisation  = var.organisation
-  org_abbr      = var.org_abbr
-  repo_name     = each.key
-  repo_env      = var.repo_env
-  role_policies = var.repo_permission[each.key]
-  oidc          = module.oidc_provider.github
-
+  source             = "../modules/role"
+  for_each           = toset(var.repos)
+  organisation       = var.organisation
+  org_abbr           = var.org_abbr
+  repo_name          = each.key
+  repo_env           = var.repo_env
+  role_policies      = var.repo_permission[each.key]
+  oidc               = module.oidc_provider.github
   custom_policy_arns = module.policy.custom_policy_arns
-
-  depends_on = [module.policy]
 }
 
 # Bucket prefix
