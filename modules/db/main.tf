@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.1"
+    }
+  }
+}
+
 resource "aws_dynamodb_table" "state_locks" {
   name         = var.table_name
   billing_mode = "PAY_PER_REQUEST"

@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.1"
+    }
+  }
+}
+
 locals {
   # Full Repository name including Organisation name
   full_repo_name = "${var.organisation}/${var.repo_name}"
@@ -43,7 +52,10 @@ data "aws_iam_policy_document" "assume_policy" {
       test     = "StringLike"
       variable = "${var.oidc.url}:sub"
 
-      values = ["repo:${local.full_repo_name}:*"]
+      values = [
+        "repo:${local.full_repo_name}:ref:refs/heads/*",
+        "repo:${local.full_repo_name}:environment:${var.repo_env}"
+      ]
     }
   }
 }

@@ -1,7 +1,11 @@
-name: Terraform Apply
+name: Dev - Terraform Apply
 on:
   push:
-    branches: ["main"]
+    branches:
+      - "main"
+    paths:
+      - "dev/**"
+
   workflow_dispatch:
     inputs:
       pr_number:
@@ -15,7 +19,13 @@ permissions:
   pull-requests: write
 
 jobs:
-  terraform_plan:
+  dev_terraform_apply:
+    environment:
+      name: Development
+    env:
+      tf_version: "1.10.2"
+      tf_dir: "dev"
+    
     runs-on: ubuntu-22.04
     steps:
       - id: checkout_latest
@@ -25,18 +35,16 @@ jobs:
         name: Terraform setup using Access Key
         uses: ./actions/setup_with_key
         env:
-          terraform_version: "1.1.7"
-          terraform_dir: "./"
           aws_tfstate_key: "state/terraform-state"
         with:
-          terraform_dir: ${{ env.terraform_dir }}
-          terraform_version: ${{ env.terraform_version }}
-          aws_region: ${{ secrets.AWS_REGION }}
+          terraform_dir: ${{ env.tf_dir }}
+          terraform_version: ${{ env.tf_version }}
+          aws_region: ${{ secrets.TF_BACKEND_REGION }}
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-          aws_tfstate_bucket: ${{ secrets.S3_STATE_FILE_BUCKET }}
+          aws_tfstate_bucket: ${{ secrets.TF_BACKEND_STATE_BUCKET }}
           aws_tfstate_key: ${{ env.aws_tfstate_key }}
-          aws_tflock_table: ${{ secrets.DYNAMODB_STATE_LOCK_TABLE }}
+          aws_tflock_table: ${{ secrets.TF_BACKEND_LOCKID_TABLE }}
 
       - id: get_pr_number
         name: Get PR number
@@ -60,7 +68,7 @@ jobs:
       - id: dl_tf_plan
         name: Download Plan from S3
         run: |
-          aws s3 cp s3://${{ secrets.S3_REPO_ARTIFACT_BUCKET }}/plans/plan-pr_${{ steps.get_pr_number.outputs.PR_NUMBER }} tfplan
+          aws s3 cp s3://${{ secrets.S3_REPO_ARTIFACT_BUCKET }}/plans/plan-${{ steps.get_pr_number.outputs.PR_NUMBER }}_${{ env.tf_dir }} tfplan
           if [ $? -ne 0 ]; then
             echo "Failed to retrieve planfile. It may have expired or been deleted."
             exit 1
