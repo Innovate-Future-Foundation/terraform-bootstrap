@@ -31,7 +31,7 @@ variable "repos" {
   type = list(string)
   default = [
     # "access-control"
-    "frontend-infrastructure"
+    "frontend-infrastructure",
   ]
 }
 
