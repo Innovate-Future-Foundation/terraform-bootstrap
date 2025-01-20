@@ -31,7 +31,8 @@ variable "repos" {
   type = list(string)
   default = [
     # "access-control"
-    "frontend-infrastructure"
+    "frontend-infrastructure",
+    "server-infrastructure"
   ]
 }
 
@@ -50,7 +51,13 @@ variable "repo_permission" {
       "FrontendBucketConfigPolicy",
       "FrontendCloudFrontPolicy",
       "FrontendRoute53AcmPolicy"
-    ]
+    ],
+    "server-infrastructure" = [
+      # "FrontendS3Policy",
+      # "FrontendBucketConfigPolicy",
+      # "FrontendCloudFrontPolicy",
+      # "FrontendRoute53AcmPolicy"
+    ],
   }
 }
 
