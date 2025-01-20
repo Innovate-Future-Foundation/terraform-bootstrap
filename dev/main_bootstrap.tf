@@ -24,7 +24,7 @@ module "oidc_provider" {
   audience_url        = var.oidc_audience_url
 }
 
-# IAM Policies
+# Common IAM Policies
 module "custom_policy" {
   source = "../modules/policy"
 }
@@ -39,7 +39,7 @@ module "repo_roles" {
   repo_env           = var.repo_env
   role_policies      = var.repo_permission[each.key]
   oidc               = module.oidc_provider.github
-  custom_policy_arns = module.custom_policy.custom_policy_arns
+  custom_policy_arns = merge(module.custom_policy.custom_policy_arns, local.custom_policy_arns)
 }
 
 # Bucket prefix
