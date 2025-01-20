@@ -12,10 +12,10 @@ data "aws_caller_identity" "current" {}
 locals {
   # Transform the input policy ARNs into the required format
   custom_policy_arns = {
-    FrontendS3Policy               = aws_iam_policy.s3_custom_policy.arn
-    FrontendBucketConfigPolicy    = aws_iam_policy.bucket_config_policy.arn
-    FrontendCloudFrontPolicy      = aws_iam_policy.cloudfront_custom_policy.arn
-    FrontendRoute53AcmPolicy      = aws_iam_policy.route53_acm_policy.arn
+    FrontendS3Policy           = aws_iam_policy.s3_custom_policy.arn
+    FrontendBucketConfigPolicy = aws_iam_policy.bucket_config_policy.arn
+    FrontendCloudFrontPolicy   = aws_iam_policy.cloudfront_custom_policy.arn
+    FrontendRoute53AcmPolicy   = aws_iam_policy.route53_acm_policy.arn
   }
 }
 
@@ -36,7 +36,6 @@ resource "aws_iam_policy" "s3_custom_policy" {
           "s3:GetBucketPolicy",
           "s3:PutBucketPolicy"
         ]
-        Resource = "arn:aws:s3:::${var.frontend_bucket_name}"
       },
       {
         Effect = "Allow"
@@ -47,7 +46,6 @@ resource "aws_iam_policy" "s3_custom_policy" {
           "s3:ListBucketMultipartUploads",
           "s3:ListMultipartUploadParts"
         ]
-        Resource = "arn:aws:s3:::${var.frontend_bucket_name}/*"
       }
     ]
   })
@@ -72,7 +70,6 @@ resource "aws_iam_policy" "bucket_config_policy" {
           "s3:PutEncryptionConfiguration",
           "s3:GetEncryptionConfiguration"
         ]
-        Resource = "arn:aws:s3:::${var.frontend_bucket_name}"
       }
     ]
   })
@@ -96,7 +93,6 @@ resource "aws_iam_policy" "cloudfront_custom_policy" {
           "cloudfront:CreateInvalidation",
           "cloudfront:GetInvalidation"
         ]
-        Resource = "arn:aws:cloudfront::${data.aws_caller_identity.current.account_id}:distribution/*"
       },
       {
         Effect = "Allow"
@@ -105,7 +101,6 @@ resource "aws_iam_policy" "cloudfront_custom_policy" {
           "cloudfront:DeleteOriginAccessIdentity",
           "cloudfront:GetOriginAccessIdentity"
         ]
-        Resource = "arn:aws:cloudfront::${data.aws_caller_identity.current.account_id}:origin-access-identity/*"
       }
     ]
   })
@@ -126,10 +121,7 @@ resource "aws_iam_policy" "route53_acm_policy" {
           "route53:GetHostedZone",
           "route53:ListResourceRecordSets"
         ]
-        Resource = [
-          "arn:aws:route53:::hostedzone/${var.hosted_zone_id}",
-          "arn:aws:route53:::change/*"
-        ]
+
       },
       {
         Effect = "Allow"
@@ -140,7 +132,6 @@ resource "aws_iam_policy" "route53_acm_policy" {
           "acm:ListCertificates",
           "acm:AddTagsToCertificate"
         ]
-        Resource = "arn:aws:acm:*:${data.aws_caller_identity.current.account_id}:certificate/*"
       }
     ]
   })

@@ -69,3 +69,4 @@ variable "oidc_provider_thumbprint" {
   type        = string
   description = "The thumbprint of the OIDC provider"
 }
+
