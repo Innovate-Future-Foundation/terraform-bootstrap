@@ -31,6 +31,7 @@ variable "repos" {
   type = list(string)
   default = [
     # "access-control"
+    "Frontend"
   ]
 }
 
@@ -43,6 +44,41 @@ variable "repo_permission" {
     #   "AWSSSOMemberAccountAdministrator",                 # For SSO management
     #   "SAMLProviderManagementPolicy"
     # ]
+    
+    "Frontend" = [
+      # S3 permissions for static website hosting
+      "s3:CreateBucket",
+      "s3:DeleteBucket",
+      "s3:PutBucketPolicy",
+      "s3:GetBucketPolicy",
+      "s3:PutObject",          # Upload files
+      "s3:GetObject",          # Download files
+      "s3:DeleteObject",       # Remove files
+      "s3:ListBucket",         # List bucket contents
+      "s3:PutBucketWebsite",   # Configure static website hosting
+
+      # CloudFront permissions for CDN management
+      "cloudfront:CreateDistribution",    # Create new CDN distribution
+      "cloudfront:UpdateDistribution",    # Modify existing distribution
+      "cloudfront:DeleteDistribution",    # Remove distribution
+      "cloudfront:GetDistribution",       # Read distribution config
+      "cloudfront:ListDistributions",     # List all distributions
+      "cloudfront:CreateInvalidation",    # Clear cache when deploying
+      
+      # ACM permissions for SSL certificate management
+      "acm:RequestCertificate",          # Request new SSL cert
+      "acm:DeleteCertificate",           # Remove SSL cert
+      "acm:DescribeCertificate",         # Get cert details
+      "acm:ListCertificates",            # List all certs
+      "acm:AddTagsToCertificate",        # Add tags to cert
+      
+      # Route53 permissions for DNS management
+      "route53:ChangeResourceRecordSets", # Modify DNS records
+      "route53:GetChange",                # Check DNS propagation
+      "route53:ListHostedZones",          # List DNS zones
+      "route53:GetHostedZone",            # Get zone details
+      "route53:ListResourceRecordSets"    # List DNS records
+    ]
   }
 }
 
