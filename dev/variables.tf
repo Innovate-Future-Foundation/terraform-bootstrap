@@ -32,7 +32,6 @@ variable "repos" {
   default = [
     # "access-control"
     "frontend-infrastructure",
-    "server-infrastructure"
   ]
 }
 
@@ -51,13 +50,7 @@ variable "repo_permission" {
       "FrontendBucketConfigPolicy",
       "FrontendCloudFrontPolicy",
       "FrontendRoute53AcmPolicy"
-    ],
-    "server-infrastructure" = [
-      # "FrontendS3Policy",
-      # "FrontendBucketConfigPolicy",
-      # "FrontendCloudFrontPolicy",
-      # "FrontendRoute53AcmPolicy"
-    ],
+    ]
   }
 }
 
