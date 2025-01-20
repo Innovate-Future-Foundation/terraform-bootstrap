@@ -52,10 +52,10 @@ resource "random_password" "bucket_suffix" {
 }
 
 # Workflow Artifact
-module "workflow_artifact" {
+module "workflow_temp" {
   for_each       = toset(var.repos)
   source         = "../modules/bucket"
-  bucket_name    = "${var.org_abbr}-${each.key}-workflow-artifact-${random_password.bucket_suffix.result}"
+  bucket_name    = "${var.org_abbr}-${each.key}-workflow-temp-${random_password.bucket_suffix.result}"
   principal_role = module.repo_roles[each.key].role_obj
 }
 

@@ -96,12 +96,12 @@ resource "random_password" "sso_bucket_suffix" {
 }
 
 # Workflow Artifact
-module "sso_workflow_artifact" {
+module "sso_workflow_temp" {
   providers = {
     aws = aws.management_account
   }
   source         = "../modules/bucket"
-  bucket_name    = "${var.org_abbr}-${var.sso_repo}-workflow-artifact-${random_password.sso_bucket_suffix.result}"
+  bucket_name    = "${var.org_abbr}-${var.sso_repo}-workflow-temp-${random_password.sso_bucket_suffix.result}"
   principal_role = module.sso_repo_role.role_obj
 }
 

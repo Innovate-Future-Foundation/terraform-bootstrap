@@ -34,20 +34,6 @@ jobs:
       - id: checkout_latest
         name: Checkout latest
         uses: actions/checkout@v4
-      - id: tf_prep
-        name: Terraform setup using Access Key
-        uses: ./actions/setup_with_key
-        env:
-          aws_tfstate_key: "state/terraform-state"
-        with:
-          terraform_dir: ${{ env.tf_dir }}
-          terraform_version: ${{ env.tf_version }}
-          aws_region: ${{ secrets.TF_BACKEND_REGION }}
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-          aws_tfstate_bucket: ${{ secrets.TF_BACKEND_STATE_BUCKET }}
-          aws_tfstate_key: ${{ env.aws_tfstate_key }}
-          aws_tflock_table: ${{ secrets.TF_BACKEND_LOCKID_TABLE }}
 
       - id: get_pr_number
         name: Get PR number
@@ -67,6 +53,21 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - id: tf_prep
+        name: Terraform setup using Access Key
+        uses: ./actions/setup_with_key
+        env:
+          aws_tfstate_key: "state/terraform-state"
+        with:
+          terraform_dir: ${{ env.tf_dir }}
+          terraform_version: ${{ env.tf_version }}
+          aws_region: ${{ secrets.TF_BACKEND_REGION }}
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          aws_tfstate_bucket: ${{ secrets.TF_BACKEND_STATE_BUCKET }}
+          aws_tfstate_key: ${{ env.aws_tfstate_key }}
+          aws_tflock_table: ${{ secrets.TF_BACKEND_LOCKID_TABLE }}
+      
       - id: dl_tf_plan
         if: steps.get_pr_number.outputs.PR_NUMBER != 0
         name: Download Plan from S3
@@ -81,7 +82,7 @@ jobs:
         if: steps.get_pr_number.outputs.PR_NUMBER != 0
         name: Terraform Apply tfplan
         run: terraform apply -auto-approve tfplan
-      
+
       - id: tf_hot_apply
         if: steps.get_pr_number.outputs.PR_NUMBER == 0
         name: Terraform Fast Apply For Hotfix
