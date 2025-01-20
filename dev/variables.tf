@@ -31,6 +31,7 @@ variable "repos" {
   type = list(string)
   default = [
     # "access-control"
+    "frontend-infrastructure"
   ]
 }
 
@@ -43,6 +44,13 @@ variable "repo_permission" {
     #   "AWSSSOMemberAccountAdministrator",                 # For SSO management
     #   "SAMLProviderManagementPolicy"
     # ]
+
+    "frontend-infrastructure" = [
+      "FrontendS3Policy",
+      "FrontendBucketConfigPolicy",
+      "FrontendCloudFrontPolicy",
+      "FrontendRoute53AcmPolicy"
+    ]
   }
 }
 
@@ -61,3 +69,4 @@ variable "oidc_provider_thumbprint" {
   type        = string
   description = "The thumbprint of the OIDC provider"
 }
+
