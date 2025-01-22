@@ -94,9 +94,16 @@ resource "aws_iam_policy" "cloudfront_custom_policy" {
           "cloudfront:UpdateDistribution",
           "cloudfront:TagResource",
           "cloudfront:CreateInvalidation",
-          "cloudfront:GetInvalidation"
+          "cloudfront:GetInvalidation",
+          "cloudfront:ListCachePolicies",
+          "cloudfront:GetCachePolicy",
+          "cloudfront:ListResponseHeadersPolicies",
+          "cloudfront:GetResponseHeadersPolicy",
+          "cloudfront:CreateOriginAccessControl",
+          "cloudfront:GetOriginAccessControl",
+          "cloudfront:DeleteOriginAccessControl"
         ]
-        Resource = "arn:aws:cloudfront::*:distribution/*"
+        Resource = "*"
       },
       {
         Effect = "Allow"
@@ -121,14 +128,14 @@ resource "aws_iam_policy" "route53_acm_policy" {
       {
         Effect = "Allow"
         Action = [
+          "route53:ListHostedZones",
           "route53:ChangeResourceRecordSets",
           "route53:GetChange",
           "route53:GetHostedZone",
           "route53:ListResourceRecordSets"
         ]
         Resource = [
-          "arn:aws:route53:::hostedzone/*", 
-          "arn:aws:route53:::change/*"
+          "*"
         ]
       },
       {
