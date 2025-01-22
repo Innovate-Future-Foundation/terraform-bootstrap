@@ -3,7 +3,7 @@ variable "table_name" {
 }
 
 variable "hash_key" {
-  type = string
+  type    = string
   default = "LockID"
 }
 

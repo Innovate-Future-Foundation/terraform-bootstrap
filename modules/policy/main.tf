@@ -12,10 +12,10 @@ data "aws_caller_identity" "current" {}
 locals {
   # Transform the input policy ARNs into the required format
   custom_policy_arns = {
-    FrontendS3Policy               = aws_iam_policy.s3_custom_policy.arn
-    FrontendBucketConfigPolicy    = aws_iam_policy.bucket_config_policy.arn
-    FrontendCloudFrontPolicy      = aws_iam_policy.cloudfront_custom_policy.arn
-    FrontendRoute53AcmPolicy      = aws_iam_policy.route53_acm_policy.arn
+    FrontendS3Policy           = aws_iam_policy.s3_custom_policy.arn
+    FrontendBucketConfigPolicy = aws_iam_policy.bucket_config_policy.arn
+    FrontendCloudFrontPolicy   = aws_iam_policy.cloudfront_custom_policy.arn
+    FrontendRoute53AcmPolicy   = aws_iam_policy.route53_acm_policy.arn
   }
 }
 
@@ -36,7 +36,7 @@ resource "aws_iam_policy" "s3_custom_policy" {
           "s3:GetBucketPolicy",
           "s3:PutBucketPolicy"
         ]
-        Resource = "arn:aws:s3:::*"  
+        Resource = "arn:aws:s3:::*"
       },
       {
         Effect = "Allow"
@@ -72,7 +72,7 @@ resource "aws_iam_policy" "bucket_config_policy" {
           "s3:PutEncryptionConfiguration",
           "s3:GetEncryptionConfiguration"
         ]
-       Resource = "arn:aws:s3:::*"
+        Resource = "arn:aws:s3:::*"
       }
     ]
   })
@@ -132,7 +132,9 @@ resource "aws_iam_policy" "route53_acm_policy" {
           "route53:ChangeResourceRecordSets",
           "route53:GetChange",
           "route53:GetHostedZone",
-          "route53:ListResourceRecordSets"
+          "route53:ListResourceRecordSets",
+          "route53:ListTagsForResource"
+
         ]
         Resource = [
           "*"
