@@ -134,7 +134,6 @@ resource "aws_iam_policy" "route53_acm_policy" {
           "route53:GetHostedZone",
           "route53:ListResourceRecordSets",
           "route53:ListTagsForResource"
-
         ]
         Resource = [
           "*"
