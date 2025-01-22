@@ -12,10 +12,10 @@ data "aws_caller_identity" "current" {}
 locals {
   # Transform the input policy ARNs into the required format
   custom_policy_arns = {
-    FrontendS3Policy               = aws_iam_policy.s3_custom_policy.arn
-    FrontendBucketConfigPolicy    = aws_iam_policy.bucket_config_policy.arn
-    FrontendCloudFrontPolicy      = aws_iam_policy.cloudfront_custom_policy.arn
-    FrontendRoute53AcmPolicy      = aws_iam_policy.route53_acm_policy.arn
+    FrontendS3Policy           = aws_iam_policy.s3_custom_policy.arn
+    FrontendBucketConfigPolicy = aws_iam_policy.bucket_config_policy.arn
+    FrontendCloudFrontPolicy   = aws_iam_policy.cloudfront_custom_policy.arn
+    FrontendRoute53AcmPolicy   = aws_iam_policy.route53_acm_policy.arn
   }
 }
 
@@ -34,9 +34,9 @@ resource "aws_iam_policy" "s3_custom_policy" {
           "s3:ListBucket",
           "s3:GetBucketLocation",
           "s3:GetBucketPolicy",
-          "s3:PutBucketPolicy"
+          "s3:PutBucketPolicy",
         ]
-        Resource = "arn:aws:s3:::*"  
+        Resource = "arn:aws:s3:::*"
       },
       {
         Effect = "Allow"
@@ -45,7 +45,7 @@ resource "aws_iam_policy" "s3_custom_policy" {
           "s3:GetObject",
           "s3:DeleteObject",
           "s3:ListBucketMultipartUploads",
-          "s3:ListMultipartUploadParts"
+          "s3:ListMultipartUploadParts",
         ]
         Resource = "arn:aws:s3:::*/*"
       }
@@ -70,9 +70,9 @@ resource "aws_iam_policy" "bucket_config_policy" {
           "s3:PutBucketPublicAccessBlock",
           "s3:GetBucketPublicAccessBlock",
           "s3:PutEncryptionConfiguration",
-          "s3:GetEncryptionConfiguration"
+          "s3:GetEncryptionConfiguration",
         ]
-       Resource = "arn:aws:s3:::*"
+        Resource = "arn:aws:s3:::*"
       }
     ]
   })
@@ -101,7 +101,7 @@ resource "aws_iam_policy" "cloudfront_custom_policy" {
           "cloudfront:GetResponseHeadersPolicy",
           "cloudfront:CreateOriginAccessControl",
           "cloudfront:GetOriginAccessControl",
-          "cloudfront:DeleteOriginAccessControl"
+          "cloudfront:DeleteOriginAccessControl",
         ]
         Resource = "*"
       },
@@ -110,7 +110,7 @@ resource "aws_iam_policy" "cloudfront_custom_policy" {
         Action = [
           "cloudfront:CreateOriginAccessIdentity",
           "cloudfront:DeleteOriginAccessIdentity",
-          "cloudfront:GetOriginAccessIdentity"
+          "cloudfront:GetOriginAccessIdentity",
         ]
         Resource = "arn:aws:cloudfront::*:origin-access-identity/*"
       }
@@ -132,7 +132,8 @@ resource "aws_iam_policy" "route53_acm_policy" {
           "route53:ChangeResourceRecordSets",
           "route53:GetChange",
           "route53:GetHostedZone",
-          "route53:ListResourceRecordSets"
+          "route53:ListResourceRecordSets",
+          "route53:ListTagsForResource",
         ]
         Resource = [
           "*"
@@ -145,7 +146,7 @@ resource "aws_iam_policy" "route53_acm_policy" {
           "acm:DescribeCertificate",
           "acm:DeleteCertificate",
           "acm:ListCertificates",
-          "acm:AddTagsToCertificate"
+          "acm:AddTagsToCertificate",
         ]
         Resource = "arn:aws:acm:*:*:certificate/*"
       }
