@@ -37,6 +37,12 @@ resource "aws_iam_policy" "s3_custom_policy" {
           "s3:PutBucketPolicy",
           "s3:GetBucketAcl",
           "s3:GetBucketWebsite",
+          "s3:GetBucketRequestPayment",
+          "s3:GetBucketLogging",
+          "s3:GetLifecycleConfiguration",
+          "s3:GetReplicationConfiguration",
+          "s3:GetBucketObjectLockConfiguration",
+          "s3:GetBucketTagging"
         ]
         Resource = "arn:aws:s3:::*"
       },
@@ -47,7 +53,7 @@ resource "aws_iam_policy" "s3_custom_policy" {
           "s3:GetObject",
           "s3:DeleteObject",
           "s3:ListBucketMultipartUploads",
-          "s3:ListMultipartUploadParts",
+          "s3:ListMultipartUploadParts"
         ]
         Resource = "arn:aws:s3:::*/*"
       }
@@ -72,7 +78,7 @@ resource "aws_iam_policy" "bucket_config_policy" {
           "s3:PutBucketPublicAccessBlock",
           "s3:GetBucketPublicAccessBlock",
           "s3:PutEncryptionConfiguration",
-          "s3:GetEncryptionConfiguration",
+          "s3:GetEncryptionConfiguration"
         ]
         Resource = "arn:aws:s3:::*"
       }
@@ -104,6 +110,7 @@ resource "aws_iam_policy" "cloudfront_custom_policy" {
           "cloudfront:CreateOriginAccessControl",
           "cloudfront:GetOriginAccessControl",
           "cloudfront:DeleteOriginAccessControl",
+          "cloudfront:ListTagsForResource"
         ]
         Resource = "*"
       },
@@ -112,7 +119,7 @@ resource "aws_iam_policy" "cloudfront_custom_policy" {
         Action = [
           "cloudfront:CreateOriginAccessIdentity",
           "cloudfront:DeleteOriginAccessIdentity",
-          "cloudfront:GetOriginAccessIdentity",
+          "cloudfront:GetOriginAccessIdentity"
         ]
         Resource = "arn:aws:cloudfront::*:origin-access-identity/*"
       }
@@ -135,11 +142,9 @@ resource "aws_iam_policy" "route53_acm_policy" {
           "route53:GetChange",
           "route53:GetHostedZone",
           "route53:ListResourceRecordSets",
-          "route53:ListTagsForResource",
+          "route53:ListTagsForResource"
         ]
-        Resource = [
-          "*"
-        ]
+        Resource = "*"
       },
       {
         Effect = "Allow"
@@ -149,7 +154,7 @@ resource "aws_iam_policy" "route53_acm_policy" {
           "acm:DeleteCertificate",
           "acm:ListCertificates",
           "acm:AddTagsToCertificate",
-          "acm:ListTagsForCertificate",
+          "acm:ListTagsForCertificate"
         ]
         Resource = "arn:aws:acm:*:*:certificate/*"
       }
