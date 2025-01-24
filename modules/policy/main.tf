@@ -35,6 +35,7 @@ resource "aws_iam_policy" "s3_custom_policy" {
           "s3:GetBucketLocation",
           "s3:GetBucketPolicy",
           "s3:PutBucketPolicy",
+          "s3:GetBucketAcl",
         ]
         Resource = "arn:aws:s3:::*"
       },
@@ -147,6 +148,7 @@ resource "aws_iam_policy" "route53_acm_policy" {
           "acm:DeleteCertificate",
           "acm:ListCertificates",
           "acm:AddTagsToCertificate",
+          "acm:ListTagsForCertificate",
         ]
         Resource = "arn:aws:acm:*:*:certificate/*"
       }
