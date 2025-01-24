@@ -36,6 +36,7 @@ resource "aws_iam_policy" "s3_custom_policy" {
           "s3:GetBucketPolicy",
           "s3:PutBucketPolicy",
           "s3:GetBucketAcl",
+          "s3:GetBucketWebsite",
         ]
         Resource = "arn:aws:s3:::*"
       },
