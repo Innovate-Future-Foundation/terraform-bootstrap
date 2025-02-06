@@ -32,6 +32,7 @@ variable "repos" {
   default = [
     # "access-control"
     "frontend-infrastructure",
+    "server-infrastructure"
   ]
 }
 
@@ -50,6 +51,9 @@ variable "repo_permission" {
       "FrontendBucketConfigPolicy",
       "FrontendCloudFrontPolicy",
       "FrontendRoute53AcmPolicy"
+    ],
+    "server-infrastructure" = [
+      "NetworkPowerUserPolicy",
     ]
   }
 }

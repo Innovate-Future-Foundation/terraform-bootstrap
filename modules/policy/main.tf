@@ -16,6 +16,7 @@ locals {
     FrontendBucketConfigPolicy = aws_iam_policy.bucket_config_policy.arn
     FrontendCloudFrontPolicy   = aws_iam_policy.cloudfront_custom_policy.arn
     FrontendRoute53AcmPolicy   = aws_iam_policy.route53_acm_policy.arn
+    NetworkPowerUserPolicy     = aws_iam_policy.network_poweruser_policy.arn
   }
 }
 
@@ -160,4 +161,45 @@ resource "aws_iam_policy" "route53_acm_policy" {
       }
     ]
   })
+}
+
+data "aws_iam_policy_document" "network_poweruser_policy" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "ec2:CreateVpc",
+      "ec2:DeleteVpc",
+      "ec2:DescribeVpcs",
+      "ec2:ModifyVpcAttribute",
+      "ec2:CreateSubnet",
+      "ec2:DeleteSubnet",
+      "ec2:DescribeSubnets",
+      "ec2:CreateInternetGateway",
+      "ec2:DeleteInternetGateway",
+      "ec2:AttachInternetGateway",
+      "ec2:DetachInternetGateway",
+      "ec2:DescribeInternetGateways",
+      "ec2:CreateRouteTable",
+      "ec2:DeleteRouteTable",
+      "ec2:DescribeRouteTables",
+      "ec2:CreateRoute",
+      "ec2:DeleteRoute",
+      "ec2:AssociateRouteTable",
+      "ec2:DisassociateRouteTable",
+      "ec2:CreateSecurityGroup",
+      "ec2:DeleteSecurityGroup",
+      "ec2:DescribeSecurityGroups",
+      "ec2:AuthorizeSecurityGroupIngress",
+      "ec2:RevokeSecurityGroupIngress",
+      "ec2:CreateTags",
+      "ec2:DeleteTags",
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "network_poweruser_policy" {
+  name        = "NetworkPowerUserPolicy"
+  description = "Custom policy for managing VPC Network resources"
+  policy      = data.aws_iam_policy_document.network_poweruser_policy.json
 }
