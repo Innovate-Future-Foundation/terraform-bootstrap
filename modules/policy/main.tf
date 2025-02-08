@@ -170,6 +170,8 @@ data "aws_iam_policy_document" "network_poweruser_policy" {
       "ec2:CreateVpc",
       "ec2:DeleteVpc",
       "ec2:DescribeVpcs",
+      "ec2:DescribeVpcAttribute",
+      "ec2:DescribeNetworkInterfaces",
       "ec2:ModifyVpcAttribute",
       "ec2:CreateSubnet",
       "ec2:DeleteSubnet",
@@ -191,6 +193,8 @@ data "aws_iam_policy_document" "network_poweruser_policy" {
       "ec2:DescribeSecurityGroups",
       "ec2:AuthorizeSecurityGroupIngress",
       "ec2:RevokeSecurityGroupIngress",
+      "ec2:AuthorizeSecurityGroupEgress",
+      "ec2:RevokeSecurityGroupEgress",
       "ec2:CreateTags",
       "ec2:DeleteTags",
     ]
