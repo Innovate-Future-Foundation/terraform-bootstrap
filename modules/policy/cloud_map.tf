@@ -3,7 +3,11 @@ data "aws_iam_policy_document" "cloud_map_poweruser" {
     effect = "Allow"
     actions = [
       "servicediscovery:CreatePrivateDnsNamespace",
+      "servicediscovery:DeleteNamespace",
+      "servicediscovery:GetNamespace",
+      "servicediscovery:ListNamespaces",
       "route53:CreateHostedZone",
+      "route53:DeleteHostedZone",
       "route53:GetHostedZone",
       "route53:ListHostedZonesByName",
       "ec2:DescribeVpcs",
