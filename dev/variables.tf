@@ -30,7 +30,6 @@ variable "sso_repo" {
 variable "repos" {
   type = list(string)
   default = [
-    # "access-control"
     "frontend-infrastructure",
     "server-infrastructure"
   ]
@@ -39,13 +38,6 @@ variable "repos" {
 variable "repo_permission" {
   type = map(list(string))
   default = {
-    # "access-control" = [
-    #   "IAMFullAccess",
-    #   "AWSConfigRoleForOrganizations",                    # For Organization management
-    #   "AWSSSOMemberAccountAdministrator",                 # For SSO management
-    #   "SAMLProviderManagementPolicy"
-    # ]
-
     "frontend-infrastructure" = [
       "FrontendS3Policy",
       "FrontendBucketConfigPolicy",
@@ -54,6 +46,7 @@ variable "repo_permission" {
     ],
     "server-infrastructure" = [
       "NetworkPowerUserPolicy",
+      "CloudMapPowerUserPolicy",
     ]
   }
 }
