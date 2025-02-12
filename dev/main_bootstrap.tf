@@ -61,7 +61,7 @@ module "workflow_temp" {
 
 # Terraform states
 module "terraform_state" {
-  for_each       = toset(var.repos)
+  for_each       = toset(var.tf_repos)
   source         = "../modules/bucket"
   bucket_name    = "${var.org_abbr}-${each.key}-tfstate-${random_password.bucket_suffix.result}"
   principal_role = module.repo_roles[each.key].role_obj
@@ -69,7 +69,7 @@ module "terraform_state" {
 
 # Terraform LockIDs
 module "terraform_locks" {
-  for_each       = toset(var.repos)
+  for_each       = toset(var.tf_repos)
   source         = "../modules/db"
   table_name     = "${var.org_abbr}-${each.key}-tflock"
   principal_role = module.repo_roles[each.key].role_obj
