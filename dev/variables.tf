@@ -31,7 +31,17 @@ variable "repos" {
   type = list(string)
   default = [
     "frontend-infrastructure",
-    "server-infrastructure"
+    "server-infrastructure",
+    "frontend",
+    "server",
+  ]
+}
+
+variable "tf_repos" {
+  type = list(string)
+  default = [
+    "frontend-infrastructure",
+    "server-infrastructure",
   ]
 }
 
@@ -47,8 +57,12 @@ variable "repo_permission" {
     "server-infrastructure" = [
       "NetworkPowerUserPolicy",
       "CloudMapPowerUserPolicy",
-      "ECRPowerUserPolicy"
-    ]
+      "ECRPowerUserPolicy",
+    ],
+    "frontend" = [
+    ],
+    "server" = [
+    ],
   }
 }
 
@@ -67,4 +81,3 @@ variable "oidc_provider_thumbprint" {
   type        = string
   description = "The thumbprint of the OIDC provider"
 }
-
