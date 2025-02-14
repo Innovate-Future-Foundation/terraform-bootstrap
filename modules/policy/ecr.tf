@@ -7,6 +7,7 @@ data "aws_iam_policy_document" "ecr_poweruser" {
       "ecr:DescribeRepositories",
       "ecr:ListRepositories",
       "ecr:TagResource",
+      "ecr:ListTagsForResource",
       "ecr:PutImageTagMutability",
       "ecr:PutImageScanningConfiguration",
       "ecr:GetRepositoryPolicy",
