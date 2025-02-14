@@ -52,7 +52,7 @@ variable "repo_permission" {
       "FrontendS3Policy",
       "FrontendBucketConfigPolicy",
       "FrontendCloudFrontPolicy",
-      "FrontendRoute53AcmPolicy"
+      "FrontendRoute53AcmPolicy",
     ],
     "server-infrastructure" = [
       "NetworkPowerUserPolicy",
