@@ -18,6 +18,7 @@ locals {
     FrontendRoute53AcmPolicy   = aws_iam_policy.route53_acm_policy.arn
     NetworkPowerUserPolicy     = aws_iam_policy.network_poweruser_policy.arn
     CloudMapPowerUserPolicy    = aws_iam_policy.cloud_map_poweruser_policy.arn
+    ECRPowerUserPolicy         = aws_iam_policy.ecr_poweruser_policy.arn
   }
 }
 

@@ -47,6 +47,7 @@ variable "repo_permission" {
     "server-infrastructure" = [
       "NetworkPowerUserPolicy",
       "CloudMapPowerUserPolicy",
+      "ECRPowerUserPolicy"
     ]
   }
 }
