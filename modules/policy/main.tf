@@ -19,6 +19,9 @@ locals {
     NetworkPowerUserPolicy     = aws_iam_policy.network_poweruser_policy.arn
     CloudMapPowerUserPolicy    = aws_iam_policy.cloud_map_poweruser_policy.arn
     ECRPowerUserPolicy         = aws_iam_policy.ecr_poweruser_policy.arn
+    LogGroupInFFUserPolicy     = aws_iam_policy.log_group_inff_user_policy.arn
+    ManageECSRolePolicy        = aws_iam_policy.manage_ecs_role_policy.arn
+    ECSPowerUserPolicy         = aws_iam_policy.ecs_poweruser_policy.arn
   }
 }
 

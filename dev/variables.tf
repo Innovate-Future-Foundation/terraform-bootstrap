@@ -58,6 +58,9 @@ variable "repo_permission" {
       "NetworkPowerUserPolicy",
       "CloudMapPowerUserPolicy",
       "ECRPowerUserPolicy",
+      "LogGroupInFFUserPolicy",
+      "ManageECSRolePolicy",
+      "ECSPowerUserPolicy",
     ],
     "frontend" = [
     ],
