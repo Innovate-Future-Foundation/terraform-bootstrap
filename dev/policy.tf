@@ -1,7 +1,7 @@
 locals {
   # Transform the input policy ARNs into the required format
   custom_policy_arns = {
-    S3FrontendPowerUserPolicy = aws_iam_policy.s3_frontend_power_user_policy.arn
+    DevFrontendS3Policy = aws_iam_policy.s3_frontend_power_user_policy.arn
   }
 }
 
@@ -92,7 +92,7 @@ data "aws_iam_policy_document" "s3_frontend_power_user" {
 }
 
 resource "aws_iam_policy" "s3_frontend_power_user_policy" {
-  name        = "FrontendS3Policy"
+  name        = "DevFrontendS3Policy"
   description = "Custom policy for managing frontend S3 buckets and objects in Dev environment"
   policy      = data.aws_iam_policy_document.s3_frontend_power_user.json
 }

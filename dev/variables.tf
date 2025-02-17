@@ -51,7 +51,7 @@ variable "repo_permission" {
     "frontend-infrastructure" = [
       "FrontendS3Policy",
       "FrontendBucketConfigPolicy",
-      "FrontendCloudFrontPolicy",
+      "CloudFrontPowerUserPolicy",
       "FrontendRoute53AcmPolicy",
     ],
     "server-infrastructure" = [
@@ -63,8 +63,8 @@ variable "repo_permission" {
       "ECSPowerUserPolicy",
     ],
     "frontend" = [
-      "S3FrontendPowerUserPolicy",
-      "CloudFrontFrontendPowerUserPolicy",
+      "DevFrontendS3Policy",
+      "CloudFrontPowerUserPolicy",
     ],
     "server" = [
     ],

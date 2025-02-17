@@ -14,21 +14,20 @@ locals {
   custom_policy_arns = {
     FrontendS3Policy           = aws_iam_policy.s3_custom_policy.arn
     FrontendBucketConfigPolicy = aws_iam_policy.bucket_config_policy.arn
-    FrontendCloudFrontPolicy   = aws_iam_policy.cloudfront_custom_policy.arn
     FrontendRoute53AcmPolicy   = aws_iam_policy.route53_acm_policy.arn
     NetworkPowerUserPolicy     = aws_iam_policy.network_poweruser_policy.arn
-    CloudMapPowerUserPolicy    = aws_iam_policy.cloud_map_poweruser_policy.arn
+    CloudMapPowerUserPolicy    = aws_iam_policy.cloud_map_power_user_policy.arn
     ECRPowerUserPolicy         = aws_iam_policy.ecr_poweruser_policy.arn
     LogGroupInFFUserPolicy     = aws_iam_policy.log_group_inff_user_policy.arn
     ManageECSRolePolicy        = aws_iam_policy.manage_ecs_role_policy.arn
     ECSPowerUserPolicy         = aws_iam_policy.ecs_poweruser_policy.arn
-    CloudFrontFrontendPowerUserPolicy = aws_iam_policy.cloudfront_frontend_power_user_policy.arn
+    CloudFrontPowerUserPolicy  = aws_iam_policy.cloudfront_power_user_policy.arn
   }
 }
 
 # 1. S3 Bucket Policy
 resource "aws_iam_policy" "s3_custom_policy" {
-  name        = "FrontendS3BucketPolicy"
+  name        = "FrontendS3Policy"
   description = "Policy for managing frontend S3 bucket"
   policy = jsonencode({
     Version = "2012-10-17"
@@ -92,7 +91,6 @@ resource "aws_iam_policy" "bucket_config_policy" {
     ]
   })
 }
-
 
 # 4. Route53 & ACM Policy
 resource "aws_iam_policy" "route53_acm_policy" {
