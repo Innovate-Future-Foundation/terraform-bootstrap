@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "cloud_map_poweruser" {
+data "aws_iam_policy_document" "cloud_map_power_user" {
   statement {
     effect = "Allow"
     actions = [
@@ -25,8 +25,8 @@ data "aws_iam_policy_document" "cloud_map_poweruser" {
   }
 }
 
-resource "aws_iam_policy" "cloud_map_poweruser_policy" {
+resource "aws_iam_policy" "cloud_map_power_user_policy" {
   name        = "CloudMapPowerUserPolicy"
   description = "Custom policy for managing Cloud Map resources"
-  policy      = data.aws_iam_policy_document.cloud_map_poweruser.json
+  policy      = data.aws_iam_policy_document.cloud_map_power_user.json
 }

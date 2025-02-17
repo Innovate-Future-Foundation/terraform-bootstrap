@@ -22,6 +22,8 @@ locals {
     LogGroupInFFUserPolicy     = aws_iam_policy.log_group_inff_user_policy.arn
     ManageECSRolePolicy        = aws_iam_policy.manage_ecs_role_policy.arn
     ECSPowerUserPolicy         = aws_iam_policy.ecs_poweruser_policy.arn
+    S3FrontendPowerUserPolicy  = aws_iam_policy.s3_frontend_power_user_policy.arn
+    CloudFrontFrontendPowerUserPolicy  = aws_iam_policy.cloudfront_frontend_power_user_policy
   }
 }
 
