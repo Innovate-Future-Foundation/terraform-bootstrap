@@ -93,46 +93,6 @@ resource "aws_iam_policy" "bucket_config_policy" {
   })
 }
 
-# 3. CloudFront Policy
-resource "aws_iam_policy" "cloudfront_custom_policy" {
-  name        = "FrontendCloudFrontPolicy"
-  description = "Policy for managing frontend CloudFront distribution"
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "cloudfront:CreateDistribution",
-          "cloudfront:DeleteDistribution",
-          "cloudfront:GetDistribution",
-          "cloudfront:UpdateDistribution",
-          "cloudfront:TagResource",
-          "cloudfront:CreateInvalidation",
-          "cloudfront:GetInvalidation",
-          "cloudfront:ListCachePolicies",
-          "cloudfront:GetCachePolicy",
-          "cloudfront:ListResponseHeadersPolicies",
-          "cloudfront:GetResponseHeadersPolicy",
-          "cloudfront:CreateOriginAccessControl",
-          "cloudfront:GetOriginAccessControl",
-          "cloudfront:DeleteOriginAccessControl",
-          "cloudfront:ListTagsForResource"
-        ]
-        Resource = "*"
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "cloudfront:CreateOriginAccessIdentity",
-          "cloudfront:DeleteOriginAccessIdentity",
-          "cloudfront:GetOriginAccessIdentity"
-        ]
-        Resource = "arn:aws:cloudfront::*:origin-access-identity/*"
-      }
-    ]
-  })
-}
 
 # 4. Route53 & ACM Policy
 resource "aws_iam_policy" "route53_acm_policy" {
