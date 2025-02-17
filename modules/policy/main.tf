@@ -14,7 +14,6 @@ locals {
   custom_policy_arns = {
     FrontendS3Policy           = aws_iam_policy.s3_custom_policy.arn
     FrontendBucketConfigPolicy = aws_iam_policy.bucket_config_policy.arn
-    FrontendCloudFrontPolicy   = aws_iam_policy.cloudfront_custom_policy.arn
     FrontendRoute53AcmPolicy   = aws_iam_policy.route53_acm_policy.arn
     NetworkPowerUserPolicy     = aws_iam_policy.network_poweruser_policy.arn
     CloudMapPowerUserPolicy    = aws_iam_policy.cloud_map_poweruser_policy.arn
@@ -22,13 +21,13 @@ locals {
     LogGroupInFFUserPolicy     = aws_iam_policy.log_group_inff_user_policy.arn
     ManageECSRolePolicy        = aws_iam_policy.manage_ecs_role_policy.arn
     ECSPowerUserPolicy         = aws_iam_policy.ecs_poweruser_policy.arn
-    CloudFrontFrontendPowerUserPolicy = aws_iam_policy.cloudfront_frontend_power_user_policy.arn
+    CloudFrontPowerUserPolicy  = aws_iam_policy.cloudfront_power_user_policy.arn
   }
 }
 
 # 1. S3 Bucket Policy
 resource "aws_iam_policy" "s3_custom_policy" {
-  name        = "FrontendS3BucketPolicy"
+  name        = "FrontendS3Policy"
   description = "Policy for managing frontend S3 bucket"
   policy = jsonencode({
     Version = "2012-10-17"
@@ -88,47 +87,6 @@ resource "aws_iam_policy" "bucket_config_policy" {
           "s3:GetEncryptionConfiguration"
         ]
         Resource = "arn:aws:s3:::*"
-      }
-    ]
-  })
-}
-
-# 3. CloudFront Policy
-resource "aws_iam_policy" "cloudfront_custom_policy" {
-  name        = "FrontendCloudFrontPolicy"
-  description = "Policy for managing frontend CloudFront distribution"
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "cloudfront:CreateDistribution",
-          "cloudfront:DeleteDistribution",
-          "cloudfront:GetDistribution",
-          "cloudfront:UpdateDistribution",
-          "cloudfront:TagResource",
-          "cloudfront:CreateInvalidation",
-          "cloudfront:GetInvalidation",
-          "cloudfront:ListCachePolicies",
-          "cloudfront:GetCachePolicy",
-          "cloudfront:ListResponseHeadersPolicies",
-          "cloudfront:GetResponseHeadersPolicy",
-          "cloudfront:CreateOriginAccessControl",
-          "cloudfront:GetOriginAccessControl",
-          "cloudfront:DeleteOriginAccessControl",
-          "cloudfront:ListTagsForResource"
-        ]
-        Resource = "*"
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "cloudfront:CreateOriginAccessIdentity",
-          "cloudfront:DeleteOriginAccessIdentity",
-          "cloudfront:GetOriginAccessIdentity"
-        ]
-        Resource = "arn:aws:cloudfront::*:origin-access-identity/*"
       }
     ]
   })

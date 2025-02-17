@@ -47,8 +47,8 @@ data "aws_iam_policy_document" "cloudfront_power_user" {
   }
 }
 
-resource "aws_iam_policy" "cloudfront_frontend_power_user_policy" {
-  name        = "FrontendCloudFrontPolicy"
+resource "aws_iam_policy" "cloudfront_power_user_policy" {
+  name        = "CloudFrontPowerUserPolicy"
   description = "Custom policy for managing CloudFront distributions"
   policy      = data.aws_iam_policy_document.cloudfront_power_user.json
 }
