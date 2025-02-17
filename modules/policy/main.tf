@@ -16,7 +16,7 @@ locals {
     FrontendBucketConfigPolicy = aws_iam_policy.bucket_config_policy.arn
     FrontendRoute53AcmPolicy   = aws_iam_policy.route53_acm_policy.arn
     NetworkPowerUserPolicy     = aws_iam_policy.network_poweruser_policy.arn
-    CloudMapPowerUserPolicy    = aws_iam_policy.cloud_map_power_user_policy.arn
+    CloudMapPowerUserPolicy    = aws_iam_policy.cloud_map_poweruser_policy.arn
     ECRPowerUserPolicy         = aws_iam_policy.ecr_poweruser_policy.arn
     LogGroupInFFUserPolicy     = aws_iam_policy.log_group_inff_user_policy.arn
     ManageECSRolePolicy        = aws_iam_policy.manage_ecs_role_policy.arn
