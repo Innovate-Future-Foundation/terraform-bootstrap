@@ -63,6 +63,8 @@ variable "repo_permission" {
       "ECSPowerUserPolicy",
     ],
     "frontend" = [
+      "S3FrontendPowerUserPolicy",
+      "CloudFrontFrontendPowerUserPolicy",
     ],
     "server" = [
     ],
