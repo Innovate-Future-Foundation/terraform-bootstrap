@@ -14,6 +14,7 @@ data "aws_iam_policy_document" "cloud_map_poweruser" {
       "servicediscovery:DeleteService",
       "servicediscovery:GetService",
       "servicediscovery:CreateService",
+      "servicediscovery:UpdateService",
       "route53:CreateHostedZone",
       "route53:DeleteHostedZone",
       "route53:GetHostedZone",
