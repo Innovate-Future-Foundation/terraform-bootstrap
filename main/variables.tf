@@ -12,7 +12,7 @@ variable "prod_region" {
   default = "us-west-2"
 }
 
-variable "production_account_id" {
+variable "prod_account_id" {
   type = string
 }
 

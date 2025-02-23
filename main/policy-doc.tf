@@ -1,5 +1,5 @@
 locals {
-  central_ecr_repo_arn = "arn:aws:ecr:${var.central_ecr_region}:${var.production_account_id}:repository/${var.central_ecr_repo}"
+  central_ecr_repo_arn = "arn:aws:ecr:${var.central_ecr_region}:${var.prod_account_id}:repository/${var.central_ecr_repo}"
 }
 
 data "aws_iam_policy_document" "central_ecr_tagging_policy" {
