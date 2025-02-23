@@ -39,3 +39,6 @@ terraform.rc
 # For local testing
 .env
 .secrets
+
+# Include insensitive tfvars for different envs
+!repo_policies.tfvars
