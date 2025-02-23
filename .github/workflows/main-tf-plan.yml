@@ -1,4 +1,4 @@
-name: Dev - Terraform Plan
+name: Main - Terraform Plan
 on:
   pull_request:
     branches:
@@ -12,7 +12,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  dev_terraform_plan:
+  main_terraform_plan:
     environment:
       name: Main
     env:

@@ -1,11 +1,10 @@
-name: Dev - Terraform Apply
+name: Main - Terraform Apply
 on:
   push:
     branches:
-      - "main"
+      - main
     paths:
-      - "dev/**"
-      - "modules/**"
+      - "main/**"
 
   workflow_dispatch:
     inputs:
@@ -20,7 +19,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  dev_terraform_apply:
+  main_terraform_apply:
     environment:
       name: Main
     env:
