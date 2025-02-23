@@ -9,7 +9,7 @@ variable "audience_url" {
 }
 
 # This also allow manual input for thumbprint, in case the data block cannot fetch the tls cert
-variable "provider_thumbprint" {
+variable "thumbprint" {
   type = string
 
   # validation {

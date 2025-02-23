@@ -12,8 +12,8 @@ locals {
   # SSO Required Policies
   sso_required_policies = [
     "IAMFullAccess",
-    "AWSConfigRoleForOrganizations",    # For Organization management
-    "AWSSSOMemberAccountAdministrator", # For SSO management
+    "AWSConfigRoleForOrganizations",
+    "AWSSSOMemberAccountAdministrator",
     "SSOManagementPowerUser"
   ]
 
@@ -29,9 +29,9 @@ module "sso_oidc_provider" {
   providers = {
     aws = aws.management_account
   }
-  source              = "../modules/oidc"
-  provider_thumbprint = var.oidc_provider_thumbprint
-  audience_url        = var.oidc_audience_url
+  source       = "../modules/oidc"
+  thumbprint   = var.oidc_provider_thumbprint
+  audience_url = var.oidc_audience_url
 }
 
 # SSO Required Policy
