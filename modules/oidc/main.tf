@@ -14,7 +14,8 @@ data "tls_certificate" "github" {
 
 # Add github OIDC
 resource "aws_iam_openid_connect_provider" "github" {
-  url             = var.provider_url
-  client_id_list  = [var.audience_url]
-  thumbprint_list = [coalesce(var.provider_thumbprint, data.tls_certificate.github.certificates[0].sha1_fingerprint)]
+  url            = var.provider_url
+  client_id_list = [var.audience_url]
+  thumbprint_list = [coalesce(var.thumbprint,
+  data.tls_certificate.github.certificates[0].sha1_fingerprint)]
 }

@@ -8,6 +8,11 @@ variable "principal_role" {
   })
 }
 
+variable "versioning" {
+  type    = string
+  default = "Enabled"
+}
+
 variable "plan_file_expiration_days" {
   type    = number
   default = 30

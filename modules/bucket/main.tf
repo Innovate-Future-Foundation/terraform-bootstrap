@@ -20,7 +20,7 @@ resource "aws_s3_bucket" "bkt" {
 resource "aws_s3_bucket_versioning" "bkt" {
   bucket = aws_s3_bucket.bkt.id
   versioning_configuration {
-    status = "Enabled"
+    status = var.versioning
   }
 }
 

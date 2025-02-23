@@ -5,7 +5,6 @@ on:
       - "main"
     paths:
       - "dev/**"
-      - "modules/**"
 
   workflow_dispatch:
     inputs:
@@ -24,7 +23,6 @@ jobs:
     environment:
       name: Development
     env:
-      tf_version: "1.10.2"
       tf_dir: "dev"
     defaults:
       run:
@@ -57,16 +55,14 @@ jobs:
       - id: tf_prep
         name: Terraform setup using Access Key
         uses: ./actions/setup_with_key
-        env:
-          aws_tfstate_key: "state/terraform-state"
         with:
           terraform_dir: ${{ env.tf_dir }}
-          terraform_version: ${{ env.tf_version }}
+          terraform_version: ${{ vars.TF_VERSION }}
           aws_region: ${{ secrets.TF_BACKEND_REGION }}
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
           aws_tfstate_bucket: ${{ secrets.TF_BACKEND_STATE_BUCKET }}
-          aws_tfstate_key: ${{ env.aws_tfstate_key }}
+          aws_tfstate_key: ${{ secrets.TF_DEFAULT_STATE_KEY }}
           aws_tflock_table: ${{ secrets.TF_BACKEND_LOCKID_TABLE }}
       
       - id: dl_tf_plan
