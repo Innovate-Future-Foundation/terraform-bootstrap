@@ -46,9 +46,7 @@ jobs:
         name: Terraform Plan
         run: terraform plan -out .planfile
         env:
-          # Non-blank value will overwrite the terraform fetched thumbprint
           TF_VAR_oidc_provider_thumbprint: ""
-          TF_VAR_location: ${{ secrets.AWS_REGION }}
           TF_VAR_bootstrap_role: ${{ secrets.AWS_BOOTSTRAP_ROLE }}
           TF_VAR_central_ecr_region: ${{ secrets.CENTRAL_ECR_REGION }}
           TF_VAR_central_ecr_repo: ${{ secrets.CENTRAL_ECR_REPO }}

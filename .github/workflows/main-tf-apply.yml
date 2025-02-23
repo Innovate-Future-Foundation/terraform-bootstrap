@@ -80,7 +80,10 @@ jobs:
         name: Terraform Fast Apply For Hotfix
         run: terraform apply -auto-approve
         env:
-          # Non-blank value will overwrite the terraform fetched thumbprint
           TF_VAR_oidc_provider_thumbprint: ""
-          TF_VAR_location: ${{ secrets.AWS_REGION }}
           TF_VAR_bootstrap_role: ${{ secrets.AWS_BOOTSTRAP_ROLE }}
+          TF_VAR_central_ecr_region: ${{ secrets.CENTRAL_ECR_REGION }}
+          TF_VAR_central_ecr_repo: ${{ secrets.CENTRAL_ECR_REPO }}
+          TF_VAR_sso_account_id: ${{ secrets.AWS_SSO_ACCOUNT }}
+          TF_VAR_prod_account_id: ${{ secrets.AWS_PROD_ACCOUNT }}
+          TF_VAR_uat_account_id: ${{ secrets.AWS_UAT_ACCOUNT }}
