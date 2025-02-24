@@ -78,7 +78,7 @@ jobs:
       - id: tf_hot_apply
         if: steps.extract_pr_info.outputs.PR_NUMBER == 0
         name: Terraform Fast Apply For Hotfix
-        run: terraform apply -auto-approve
+        run: terraform apply -var-file=repo_policies.tfvars -auto-approve
         env:
           TF_VAR_oidc_provider_thumbprint: ""
           TF_VAR_bootstrap_role: ${{ secrets.AWS_BOOTSTRAP_ROLE }}
