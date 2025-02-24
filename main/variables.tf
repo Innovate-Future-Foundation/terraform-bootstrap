@@ -75,3 +75,15 @@ variable "central_ecr_region" {
 variable "central_ecr_repo" {
   type = string
 }
+
+variable "sso_repo_policies" {
+  type = map(list(string))
+}
+
+variable "prod_repo_policies" {
+  type = map(list(string))
+}
+
+variable "uat_repo_policies" {
+  type = map(list(string))
+}

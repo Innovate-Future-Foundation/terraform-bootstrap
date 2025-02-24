@@ -4,58 +4,41 @@ locals {
     abbr = "inff"
   }
 
-  prod = {
-    repo_env = local.prod_env
-    env_policies = merge(
-      local.prod_custom_policy_arns,
-      local.sso_custom_policy_arns,
-    )
+  sso = {
+    repo_env     = local.sso_env
+    env_policies = local.sso_custom_policy_arns
     repos = {
       access-control = {
-        name  = "access-control"
-        is_tf = true
-        policies = [
-          "AWSConfigRoleForOrganizations",
-          "AWSSSOMemberAccountAdministrator",
-          "SSOManagementPowerUserPolicy",
-        ]
+        name     = "access-control"
+        is_tf    = true
+        policies = var.sso_repo_policies.access-control
       }
+    }
+  }
+
+  prod = {
+    repo_env     = local.prod_env
+    env_policies = local.prod_custom_policy_arns
+    repos = {
       fe-infra = {
-        name  = "frontend-infrastructure"
-        is_tf = true
-        policies = [
-          "FrontendS3Policy",
-          "FrontendBucketConfigPolicy",
-          "CloudFrontPowerUserPolicy",
-          "FrontendRoute53AcmPolicy",
-        ]
+        name     = "frontend-infrastructure"
+        is_tf    = true
+        policies = var.prod_repo_policies.fe-infra
       }
       be-infra = {
-        name  = "server-infrastructure"
-        is_tf = true
-        policies = [
-          "NetworkPowerUserPolicy",
-          "CloudMapPowerUserPolicy",
-          "ECRPowerUserPolicy",
-          "LogGroupInFFUserPolicy",
-          "ManageECSRolePolicy",
-          "ECSPowerUserPolicy",
-          "AmazonAPIGatewayAdministrator",
-        ]
+        name     = "server-infrastructure"
+        is_tf    = true
+        policies = var.prod_repo_policies.be-infra
       }
       fe = {
-        name  = "frontend"
-        is_tf = false
-        policies = [
-          "CloudFrontPowerUserPolicy",
-        ]
+        name     = "frontend"
+        is_tf    = false
+        policies = var.prod_repo_policies.fe
       }
       be = {
-        name  = "server"
-        is_tf = false
-        policies = [
-          "CentralECRTaggingPolicy",
-        ]
+        name     = "server"
+        is_tf    = false
+        policies = var.prod_repo_policies.be
       }
     }
   }
@@ -65,41 +48,24 @@ locals {
     env_policies = local.uat_custom_policy_arns
     repos = {
       fe-infra = {
-        name  = "frontend-infrastructure"
-        is_tf = true
-        policies = [
-          "FrontendS3Policy",
-          "FrontendBucketConfigPolicy",
-          "CloudFrontPowerUserPolicy",
-          "FrontendRoute53AcmPolicy",
-        ]
+        name     = "frontend-infrastructure"
+        is_tf    = true
+        policies = var.uat_repo_policies.fe-infra
       }
       be-infra = {
-        name  = "server-infrastructure"
-        is_tf = true
-        policies = [
-          "NetworkPowerUserPolicy",
-          "CloudMapPowerUserPolicy",
-          "ECRPowerUserPolicy",
-          "LogGroupInFFUserPolicy",
-          "ManageECSRolePolicy",
-          "ECSPowerUserPolicy",
-          "AmazonAPIGatewayAdministrator",
-        ]
+        name     = "server-infrastructure"
+        is_tf    = true
+        policies = var.uat_repo_policies.be-infra
       }
       fe = {
-        name  = "frontend"
-        is_tf = false
-        policies = [
-          "CloudFrontPowerUserPolicy",
-        ]
+        name     = "frontend"
+        is_tf    = false
+        policies = var.uat_repo_policies.fe
       }
       be = {
-        name  = "server"
-        is_tf = false
-        policies = [
-          "CentralECRPublishingPolicy",
-        ]
+        name     = "server"
+        is_tf    = false
+        policies = var.uat_repo_policies.be
       }
     }
   }
@@ -157,4 +123,18 @@ module "prod_bootstrap" {
   )
   repo_env = local.prod.repo_env
   repos    = local.prod.repos
+}
+
+module "sso_bootstrap" {
+  providers = {
+    aws = aws.sso_account
+  }
+  source     = "../modules/bootstrap"
+  depends_on = [module.prod_oidc_provier]
+
+  organisation       = local.organisation
+  github_oidc        = module.prod_oidc_provier.github
+  custom_policy_arns = local.sso.env_policies
+  repo_env           = local.sso.repo_env
+  repos              = local.sso.repos
 }
