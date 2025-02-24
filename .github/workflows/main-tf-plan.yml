@@ -44,7 +44,7 @@ jobs:
 
       - id: tf_plan
         name: Terraform Plan
-        run: terraform plan -out .planfile
+        run: terraform plan -var-file=repo_policies.tfvars -out .planfile
         env:
           TF_VAR_oidc_provider_thumbprint: ""
           TF_VAR_bootstrap_role: ${{ secrets.AWS_BOOTSTRAP_ROLE }}
