@@ -25,7 +25,7 @@ variable "uat_account_id" {
   type = string
 }
 
-# variable "dev_regsion" {
+# variable "dev_region" {
 #   type    = string
 #   default = "ap-southeast-2"
 # }
@@ -37,10 +37,6 @@ variable "uat_account_id" {
 variable "bootstrap_role" {
   type = string
 }
-
-# variable "dev_bootstrap_role" {
-#   type = string
-# }
 
 variable "organisation" {
   type    = string

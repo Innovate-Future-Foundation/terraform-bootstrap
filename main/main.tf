@@ -126,9 +126,7 @@ module "prod_bootstrap" {
 }
 
 module "sso_bootstrap" {
-  providers = {
-    aws = aws.sso_account
-  }
+  providers  = { aws = aws.sso_account }
   source     = "../modules/bootstrap"
   depends_on = [module.prod_oidc_provier]
 
