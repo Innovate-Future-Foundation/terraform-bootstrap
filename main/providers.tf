@@ -56,7 +56,7 @@ provider "aws" {
 # }
 
 locals {
-  sso_env            = "Production"
+  sso_env            = "Main"
   prod_env           = "Production"
   uat_env            = "UAT"
   uat_bootstrap_role = "arn:aws:iam::${var.uat_account_id}:role/${var.bootstrap_role}"
