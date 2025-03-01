@@ -68,6 +68,7 @@ variable "repo_permission" {
       "CloudFrontPowerUserPolicy",
     ],
     "server" = [
+      "CentralECRPublishingPolicy",
     ],
   }
 }
@@ -86,4 +87,19 @@ variable "oidc_audience_url" {
 variable "oidc_provider_thumbprint" {
   type        = string
   description = "The thumbprint of the OIDC provider"
+}
+
+variable "central_ecr_region" {
+  type        = string
+  description = "Central ECR Region"
+}
+
+variable "central_ecr_repo" {
+  type        = string
+  description = "value"
+}
+
+variable "prod_account_id" {
+  type        = string
+  description = "Production AWS account"
 }
