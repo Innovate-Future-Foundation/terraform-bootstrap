@@ -62,6 +62,7 @@ variable "repo_permission" {
       "ManageECSRolePolicy",
       "ECSPowerUserPolicy",
       "AmazonAPIGatewayAdministrator",
+      "RoleManagementPolicy",
     ],
     "frontend" = [
       "DevFrontendS3Policy",
