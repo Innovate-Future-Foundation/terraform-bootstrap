@@ -53,16 +53,15 @@ jobs:
           TF_VAR_oidc_provider_thumbprint: ""
           TF_VAR_location: ${{ secrets.AWS_REGION }}
           TF_VAR_dev_bootstrap_role: ${{ secrets.AWS_DEV_BOOTSTRAP_ROLE }}
+          TF_VAR_central_ecr_region: ${{ secrets.CENTRAL_ECR_REGION }}
+          TF_VAR_central_ecr_repo: ${{ secrets.CENTRAL_ECR_REPO }}
+          TF_VAR_prod_account_id: ${{ secrets.AWS_PROD_ACCOUNT }}
 
-      - id: post_comment
-        name: Post Terraform Plan to PR
-        uses: borchero/terraform-plan-comment@v2
+      - id: publish_tf_plan
+        name: Publish Plan to PR and S3
+        uses: Innovate-Future-Foundation/common-action/publish-tfplan-s3@main
         with:
-          working-directory: ${{ env.tf_dir }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          planfile: .planfile
-
-      - name: Upload Plan to S3
-        run: |
-          aws s3 cp .planfile s3://${{ secrets.WORKFLOW_TEMP_BUCKET }}/plans/plan-${{ github.event.pull_request.number }}_${{ env.tf_dir }}
-          echo "Plan uploaded to S3"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tf_dir: ${{ env.tf_dir }}
+          s3_bucket: ${{ secrets.WORKFLOW_TEMP_BUCKET }}
+          obj_key: plans/plan-${{ github.event.pull_request.number }}_${{ env.tf_dir }}

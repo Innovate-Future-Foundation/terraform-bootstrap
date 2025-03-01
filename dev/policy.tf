@@ -1,7 +1,8 @@
 locals {
   # Transform the input policy ARNs into the required format
   custom_policy_arns = {
-    DevFrontendS3Policy = aws_iam_policy.s3_frontend_power_user_policy.arn
+    DevFrontendS3Policy        = aws_iam_policy.s3_frontend_power_user_policy.arn
+    CentralECRPublishingPolicy = aws_iam_policy.dev_central_ecr_publishing_policy.arn
   }
 }
 
@@ -95,6 +96,12 @@ resource "aws_iam_policy" "s3_frontend_power_user_policy" {
   name        = "DevFrontendS3Policy"
   description = "Custom policy for managing frontend S3 buckets and objects in Dev environment"
   policy      = data.aws_iam_policy_document.s3_frontend_power_user.json
+}
+
+resource "aws_iam_policy" "dev_central_ecr_publishing_policy" {
+  name        = "CentralECRPublishingPolicy"
+  description = "Allows tagging and pushing images to the central ECR"
+  policy      = data.aws_iam_policy_document.central_ecr_publishing_policy.json
 }
 
 # Your Environment Specific Custom Policies

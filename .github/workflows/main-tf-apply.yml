@@ -60,21 +60,15 @@ jobs:
           aws_tfstate_key: ${{ secrets.TF_DEFAULT_STATE_KEY }}
           aws_tflock_table: ${{ secrets.TF_BACKEND_LOCKID_TABLE }}
       
-      - id: dl_tf_plan
+      - id: tf_apply_plan
+        name: Terraform apply plan file from s3
         if: steps.extract_pr_info.outputs.PR_NUMBER != 0
-        name: Download Plan from S3
-        run: |
-          aws s3 cp s3://${{ secrets.WORKFLOW_TEMP_BUCKET }}/plans/plan-${{ steps.extract_pr_info.outputs.PR_NUMBER }}_${{ env.tf_dir }} tfplan
-          if [ $? -ne 0 ]; then
-            echo "Failed to retrieve planfile. It may have expired or been deleted."
-            exit 1
-          fi
-
-      - id: tf_apply_tfplan
-        if: steps.extract_pr_info.outputs.PR_NUMBER != 0
-        name: Terraform Apply tfplan
-        run: terraform apply -auto-approve tfplan
-
+        uses: Innovate-Future-Foundation/common-action/apply-tfplan-s3@main
+        with:
+          tf_dir: ${{ env.tf_dir }}
+          s3_bucket: ${{ secrets.WORKFLOW_TEMP_BUCKET }}
+          obj_key: "plans/plan-${{ steps.extract_pr_info.outputs.PR_NUMBER }}_${{ env.tf_dir }}"
+  
       - id: tf_hot_apply
         if: steps.extract_pr_info.outputs.PR_NUMBER == 0
         name: Terraform Fast Apply For Hotfix
