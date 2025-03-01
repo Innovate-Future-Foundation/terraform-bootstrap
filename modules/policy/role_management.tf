@@ -6,6 +6,8 @@ data "aws_iam_policy_document" "role_management_policy" {
     actions = [
       "iam:CreateRole",
       "iam:DeleteRole",
+      "iam:TagRole",
+      "iam:UntagRole",
       "iam:GetRole",
       "iam:ListRoles",
       "iam:UpdateRole",
