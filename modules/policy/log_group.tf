@@ -10,12 +10,12 @@ data "aws_iam_policy_document" "log_group_inff_user" {
       "logs:PutRetentionPolicy",
       "logs:DescribeLogGroups",
     ]
-    resources = ["arn:aws:logs:ap-southeast-2:*:log-group:inff/*"]
+    resources = ["arn:aws:logs:*:*:log-group:inff/*"]
   }
   statement {
     effect    = "Allow"
     actions   = ["logs:DescribeLogGroups"]
-    resources = ["arn:aws:logs:ap-southeast-2:*:log-group:*"]
+    resources = ["arn:aws:logs:*:*:log-group:*"]
   }
 }
 
