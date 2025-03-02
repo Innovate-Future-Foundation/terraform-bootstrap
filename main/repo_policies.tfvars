@@ -23,6 +23,7 @@ prod_repo_policies = {
     "ManageECSRolePolicy",
     "ECSPowerUserPolicy",
     "AmazonAPIGatewayAdministrator",
+    "RoleManagementPolicy",
   ]
   fe = [
     "CloudFrontPowerUserPolicy",
@@ -48,6 +49,7 @@ uat_repo_policies = {
     "ManageECSRolePolicy",
     "ECSPowerUserPolicy",
     "AmazonAPIGatewayAdministrator",
+    "RoleManagementPolicy",
   ]
   fe = [
     "CloudFrontPowerUserPolicy",
