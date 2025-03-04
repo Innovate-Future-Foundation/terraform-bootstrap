@@ -112,6 +112,47 @@ data "aws_iam_policy_document" "uat_frontend_s3_poweruser_policy" {
       "arn:aws:s3:::uat-foundation-innovatefuture-uat-frontend-static",
     ]
   }
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:DeleteObject",
+      "s3:ListMultipartUploadParts",
+      "s3:AbortMultipartUpload",
+      "s3:PutObjectAcl",
+      "s3:GetObjectAcl",
+      "s3:PutObjectTagging",
+      "s3:GetObjectTagging",
+      "s3:DeleteObjectTagging",
+      "s3:PutObjectVersionTagging",
+      "s3:GetObjectVersionTagging",
+      "s3:DeleteObjectVersionTagging",
+      "s3:GetObjectVersion",
+      "s3:DeleteObjectVersion",
+      "s3:ListMultipartUploads",
+      "s3:GetObjectTorrent",
+      "s3:GetObjectRetention",
+      "s3:PutObjectRetention",
+      "s3:GetObjectLegalHold",
+      "s3:PutObjectLegalHold",
+      "s3:RestoreObject",
+      "s3:SelectObjectContent"
+    ]
+    resources = [
+      "arn:aws:s3:::uat-foundation-innovatefuture-uat-frontend-static/*",
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:ListAllMyBuckets",
+      "s3:CreateBucket",
+      "s3:DeleteBucket"
+    ]
+    resources = ["*"]
+  }
 }
 
 data "aws_iam_policy_document" "prod_frontend_s3_poweruser_policy" {
@@ -152,5 +193,46 @@ data "aws_iam_policy_document" "prod_frontend_s3_poweruser_policy" {
     resources = [
       "arn:aws:s3:::prod-foundation-innovatefuture-prod-frontend-static",
     ]
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:DeleteObject",
+      "s3:ListMultipartUploadParts",
+      "s3:AbortMultipartUpload",
+      "s3:PutObjectAcl",
+      "s3:GetObjectAcl",
+      "s3:PutObjectTagging",
+      "s3:GetObjectTagging",
+      "s3:DeleteObjectTagging",
+      "s3:PutObjectVersionTagging",
+      "s3:GetObjectVersionTagging",
+      "s3:DeleteObjectVersionTagging",
+      "s3:GetObjectVersion",
+      "s3:DeleteObjectVersion",
+      "s3:ListMultipartUploads",
+      "s3:GetObjectTorrent",
+      "s3:GetObjectRetention",
+      "s3:PutObjectRetention",
+      "s3:GetObjectLegalHold",
+      "s3:PutObjectLegalHold",
+      "s3:RestoreObject",
+      "s3:SelectObjectContent"
+    ]
+    resources = [
+      "arn:aws:s3:::prod-foundation-innovatefuture-prod-frontend-static/*",
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:ListAllMyBuckets",
+      "s3:CreateBucket",
+      "s3:DeleteBucket"
+    ]
+    resources = ["*"]
   }
 }
