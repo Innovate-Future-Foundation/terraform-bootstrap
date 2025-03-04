@@ -49,7 +49,8 @@ resource "aws_iam_policy" "s3_custom_policy" {
           "s3:GetLifecycleConfiguration",
           "s3:GetReplicationConfiguration",
           "s3:GetBucketObjectLockConfiguration",
-          "s3:GetBucketTagging"
+          "s3:GetBucketTagging",
+          "s3:PutBucketTagging"
         ]
         Resource = "arn:aws:s3:::*"
       },
