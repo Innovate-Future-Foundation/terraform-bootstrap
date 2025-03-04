@@ -71,6 +71,7 @@ variable "repo_permission" {
     "server" = [
       "CentralECRPublishingPolicy",
       "ECSPowerUserPolicy",
+      "RoleManagementPolicy",
     ],
   }
 }

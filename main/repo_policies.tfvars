@@ -31,6 +31,8 @@ prod_repo_policies = {
   ]
   be = [
     "CentralECRTaggingPolicy",
+    "ECSPowerUserPolicy",
+    "RoleManagementPolicy",
   ]
 }
 
@@ -58,5 +60,7 @@ uat_repo_policies = {
   ]
   be = [
     "CentralECRPublishingPolicy",
+    "ECSPowerUserPolicy",
+    "RoleManagementPolicy",
   ]
 }
