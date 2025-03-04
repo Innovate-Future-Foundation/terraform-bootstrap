@@ -27,6 +27,7 @@ prod_repo_policies = {
   ]
   fe = [
     "CloudFrontPowerUserPolicy",
+    "ProdFrontendS3Policy",
   ]
   be = [
     "CentralECRTaggingPolicy",
@@ -53,6 +54,7 @@ uat_repo_policies = {
   ]
   fe = [
     "CloudFrontPowerUserPolicy",
+    "UATFrontendS3Policy",
   ]
   be = [
     "CentralECRPublishingPolicy",

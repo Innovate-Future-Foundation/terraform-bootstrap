@@ -72,3 +72,85 @@ data "aws_iam_policy_document" "sso_management_poweruser_policy" {
     resources = ["arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/AWSReservedSSO*"]
   }
 }
+
+data "aws_iam_policy_document" "uat_frontend_s3_poweruser_policy" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:ListBucket",
+      "s3:GetBucketLocation",
+      "s3:GetBucketPolicy",
+      "s3:PutBucketPolicy",
+      "s3:GetBucketAcl",
+      "s3:PutBucketAcl",
+      "s3:GetBucketCORS",
+      "s3:PutBucketCORS",
+      "s3:GetBucketWebsite",
+      "s3:PutBucketWebsite",
+      "s3:DeleteBucketWebsite",
+      "s3:GetBucketVersioning",
+      "s3:PutBucketVersioning",
+      "s3:GetBucketPublicAccessBlock",
+      "s3:PutBucketPublicAccessBlock",
+      "s3:GetBucketEncryption",
+      "s3:PutBucketEncryption",
+      "s3:GetBucketRequestPayment",
+      "s3:GetBucketLogging",
+      "s3:PutBucketLogging",
+      "s3:GetLifecycleConfiguration",
+      "s3:PutLifecycleConfiguration",
+      "s3:GetBucketReplication",
+      "s3:PutBucketReplication",
+      "s3:GetBucketTagging",
+      "s3:PutBucketTagging",
+      "s3:GetBucketOwnershipControls",
+      "s3:PutBucketOwnershipControls",
+      "s3:GetObjectLockConfiguration",
+      "s3:PutObjectLockConfiguration"
+    ]
+    resources = [
+      "arn:aws:s3:::uat-foundation-innovatefuture-uat-frontend-static",
+    ]
+  }
+}
+
+data "aws_iam_policy_document" "prod_frontend_s3_poweruser_policy" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:ListBucket",
+      "s3:GetBucketLocation",
+      "s3:GetBucketPolicy",
+      "s3:PutBucketPolicy",
+      "s3:GetBucketAcl",
+      "s3:PutBucketAcl",
+      "s3:GetBucketCORS",
+      "s3:PutBucketCORS",
+      "s3:GetBucketWebsite",
+      "s3:PutBucketWebsite",
+      "s3:DeleteBucketWebsite",
+      "s3:GetBucketVersioning",
+      "s3:PutBucketVersioning",
+      "s3:GetBucketPublicAccessBlock",
+      "s3:PutBucketPublicAccessBlock",
+      "s3:GetBucketEncryption",
+      "s3:PutBucketEncryption",
+      "s3:GetBucketRequestPayment",
+      "s3:GetBucketLogging",
+      "s3:PutBucketLogging",
+      "s3:GetLifecycleConfiguration",
+      "s3:PutLifecycleConfiguration",
+      "s3:GetBucketReplication",
+      "s3:PutBucketReplication",
+      "s3:GetBucketTagging",
+      "s3:PutBucketTagging",
+      "s3:GetBucketOwnershipControls",
+      "s3:PutBucketOwnershipControls",
+      "s3:GetObjectLockConfiguration",
+      "s3:PutObjectLockConfiguration"
+    ]
+    resources = [
+      "arn:aws:s3:::prod-foundation-innovatefuture-prod-frontend-static",
+    ]
+  }
+}
