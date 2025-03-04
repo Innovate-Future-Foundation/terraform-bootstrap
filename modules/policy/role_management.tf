@@ -17,6 +17,7 @@ data "aws_iam_policy_document" "role_management_policy" {
       "iam:PutRolePolicy",
       "iam:DeleteRolePolicy",
       "iam:ListRolePolicies",
+      "iam:ListEntitiesForPolicy",
       "iam:ListAttachedRolePolicies",
       "iam:ListInstanceProfilesForRole",
       "iam:GetRolePolicy"
