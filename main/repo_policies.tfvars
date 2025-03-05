@@ -30,7 +30,7 @@ prod_repo_policies = {
     "ProdFrontendS3Policy",
   ]
   be = [
-    "CentralECRTaggingPolicy",
+    "CentralECRPublishingPolicy",
     "ECSPowerUserPolicy",
     "RoleManagementPolicy",
   ]
