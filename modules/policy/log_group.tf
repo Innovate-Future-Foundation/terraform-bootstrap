@@ -17,6 +17,11 @@ data "aws_iam_policy_document" "log_group_inff_user" {
     actions   = ["logs:DescribeLogGroups"]
     resources = ["arn:aws:logs:*:*:log-group:*"]
   }
+  statement {
+    effect    = "Allow"
+    actions   = ["logs:CreateLogDelivery"]
+    resources = ["*"]
+  }
 }
 
 resource "aws_iam_policy" "log_group_inff_user_policy" {
