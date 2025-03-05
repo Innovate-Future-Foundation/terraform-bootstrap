@@ -20,8 +20,11 @@ data "aws_iam_policy_document" "log_group_inff_user" {
   statement {
     effect = "Allow"
     actions = [
-      "logs:CreateLogDelivery",
-      "logs:ListLogDeliveries",
+      # This should be narrow down at some point
+      "logs:*",
+      # "logs:CreateLogDelivery",
+      # "logs:ListLogDeliveries",
+      # "logs:GetLogDelivery",
     ]
     resources = ["*"]
   }
